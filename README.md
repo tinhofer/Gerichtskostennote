@@ -1,91 +1,150 @@
-# Claude-Code
+# Gerichtskostennote
 
-A project scaffolded with best practices for modern development.
+Werkzeuge und strukturierte Daten zur Berechnung einer **Gerichtskostennote** nach österreichischem Recht — auf Basis des **Gerichtsgebührengesetzes (GGG)** für Gerichtsgebühren und des **Rechtsanwaltstarifgesetzes (RATG)** für Rechtsanwaltskosten.
 
-## Getting Started
+> Status: Frühphase. Aktuell sind die GGG-Tarifposten 1–4 (Zivilprozess erste/zweite/dritte Instanz, Exekutionsverfahren) als maschinenlesbares JSON erfasst. RATG-Tarifdaten und eine Berechnungsbibliothek folgen.
 
-### Prerequisites
+## Zielbild
 
-- Git
-- Your preferred programming language runtime
+1. **Tarifdaten als Single Source of Truth** — GGG- und RATG-Tarife in versionierten JSON-Dateien, mit Stand-Datum und Valorisierungs-Tracking.
+2. **Berechnungsbibliothek** (Python) — Pauschalgebühr nach Streitwert, Anwaltskosten nach Tarifpost/Leistung, Reduktionen (Anm. 3, 4 TP 1), Streitgenossenzuschlag, Einheitssatz.
+3. **Erstellung der Kostennote** — strukturierte Eingabe (Streitwert, Verfahrensart, Leistungen) → fertige Note (Markdown, später PDF).
 
-### Installation
+## Inhalt des Repos
 
-```bash
-git clone <repository-url>
-cd Claude-Code
-```
+| Pfad | Inhalt |
+|---|---|
+| `data/ggg/` | GGG-Tarifposten als JSON (TP 1, 2, 3, 4 + Index + Schema-Doku) |
+| `20260414 Gerichtsgebührengesetz_gesamt.pdf` | RIS-Konsolidat GGG, Stand 14.04.2026 |
+| `20260414 Rechtsanwaltstarifgesetz _gesamt.pdf` | RIS-Konsolidat RATG, Stand 14.04.2026 |
+| `20260414 RIS - Rechtsanwaltstarifgesetz Anl. 1 - Bundesrecht konsolidiert.pdf` | RATG Anlage 1 (Tarif) |
 
-## Project Structure
+Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](data/ratg/README.md) für die Tarifdaten-Struktur.
 
-```
-Claude-Code/
-├── .github/              # GitHub templates and workflows
-│   ├── ISSUE_TEMPLATE/   # Issue templates
-│   ├── workflows/        # CI/CD workflows
-│   └── PULL_REQUEST_TEMPLATE.md
-├── scripts/              # Utility scripts
-│   └── apply-best-practices.sh  # Apply scaffold to existing projects
-├── src/                  # Source code (create as needed)
-├── tests/                # Test files (create as needed)
-├── docs/                 # Documentation (create as needed)
-├── .editorconfig         # Editor configuration
-├── .gitignore            # Git ignore rules
-├── CHANGELOG.md          # Version history
-├── CONTRIBUTING.md       # Contribution guidelines
-├── LICENSE               # MIT License
-└── README.md             # This file
-```
-
-## Usage
-
-### For New Projects
-
-Fork or clone this repository and customize it for your needs:
+## Installation & Verwendung
 
 ```bash
-git clone https://github.com/tinhofer/Claude-Code.git my-new-project
-cd my-new-project
-rm -rf .git && git init
-git add . && git commit -m "Add: initial project scaffold"
+pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
+pip install -e ".[pdf]"       # + PDF-Renderer (reportlab)
+pip install -e ".[test]"      # + pytest, pypdf, reportlab
+python -m pytest              # 151 Tests (GGG + RATG + Renderer/CLI + PDF + ERV + Barauslagen + Fahrtkosten + dauer_stunden)
 ```
 
-### For Existing Projects
-
-Use the included script to apply best practices to an existing project:
+### CLI: vollständige Kostennote aus JSON
 
 ```bash
-# Preview what will be copied (dry run)
-./scripts/apply-best-practices.sh --dry-run /path/to/your-project
-
-# Apply the best practices
-./scripts/apply-best-practices.sh /path/to/your-project
+gkn examples/klage_15000.json                  # Markdown nach stdout
+gkn examples/klage_15000.json -o kosten.md     # Markdown in Datei
+gkn examples/klage_15000.json -o kosten.pdf    # PDF in Datei
+gkn examples/klage_15000.json -f pdf -o k.bin  # Format explizit erzwingen
+python -m gerichtskostennote -                  # JSON von stdin (immer Markdown)
 ```
 
-The script copies:
-- `.editorconfig` - Code style configuration
-- `.gitignore` - Comprehensive ignore patterns (as template if one exists)
-- `.github/ISSUE_TEMPLATE/` - Bug report and feature request templates
-- `.github/PULL_REQUEST_TEMPLATE.md` - PR checklist
-- `.github/CODEOWNERS` - Code ownership configuration
-- `.github/workflows/ci.yml` - CI/CD pipeline skeleton
-- `CONTRIBUTING.md` - Contribution guidelines
-- `CHANGELOG.md` - Version history template
+Das Format wird per Dateiendung erraten (`.pdf` → PDF, sonst Markdown) oder mit `-f/--format` explizit gewählt. Für PDF-Ausgabe ist das Extra `pdf` (ReportLab) erforderlich.
 
-After running the script, customize the files for your project's specific needs.
+Eingabe-Schema (siehe [`examples/klage_15000.json`](examples/klage_15000.json)):
 
-## Contributing
+```json
+{
+  "title": "Kostennote",
+  "header": {
+    "aktenzeichen": "1 Cg 123/26x",
+    "gericht": "BG Innere Stadt Wien",
+    "klaeger": ["Hans Mustermann", "Maria Mustermann"],
+    "beklagter": ["XYZ GmbH"],
+    "stand": "2026-05-12"
+  },
+  "streitwert": 15000,
+  "umsatzsteuer_prozent": 20,
+  "default_personen_einer_seite": 2,
+  "anwaltsleistungen": [
+    { "datum": "2026-03-15", "tp": "3a", "beschreibung": "Klage" }
+  ],
+  "gerichtsgebuehren": [
+    { "tp": "1", "beschreibung": "Pauschalgebühr Klage 1. Instanz" }
+  ]
+}
+```
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+Optional je Anwaltsleistung:
+- `personen_einer_seite`, `weitere_personen_andere_seite` — überschreibt `default_personen_einer_seite` zeilenweise.
+- `einheitssatz_multiplier` — für § 23 Abs. 5–9 RATG Spezialfälle.
+- `erv` — ERV-Erhöhung nach § 23a RATG. Werte: `"einleitend"` (5,00 EUR valorisiert), `"weiterer"` (2,60 EUR; Alias: `true`), `"grundbuch_firmenbuch"` (9,50 EUR). Der Erhöhungsbetrag fließt in den Netto-Betrag und damit in die USt-Basis, ist aber per § 23a RATG explizit aus ES- und SG-Basis ausgenommen.
 
-## Changelog
+Je Gerichtsgebühr: `ermaessigung` (`rueckziehung_vor_zustellung`, `rueckziehung_erste_tagsatzung`, `einstweilige_verfuegung`, `rueckziehung_vor_bewilligung`) und `bemessungsgrundlage` (falls vom Streitwert abweichend).
 
-See [CHANGELOG.md](CHANGELOG.md) for a list of changes.
+Top-level `barauslagen` (optional): Liste von Auslagen ohne USt (Reisekosten, Fahrtkosten, Porto etc.). Jeder Eintrag braucht `betrag`, optional `datum` und `beschreibung`. Fließt in die Gesamtsumme, aber nicht in die USt-Basis.
 
-## License
+**Fahrtkosten-Shortcut:** Top-level `default_fahrtkosten` (z. B. `4.80`) + per Anwaltsleistung `fahrtkosten`:
+- `true` → Default-Fahrtkosten als Barauslage zur Leistung angelegt;
+- Zahl → eigener Betrag, ignoriert Default;
+- `false` oder fehlend → keine Fahrtkosten (z. B. auswärtige Verhandlungen mit `einheitssatz_multiplier: 2` nach § 23 Abs. 5 RATG).
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Tagsatzungsdauer:** Pro TP 3 Abschnitt II Leistung kann `dauer_stunden` (1, 2, 3, 4 …) gesetzt werden. Erste Stunde voller Tarifsatz, jede weitere (auch nur begonnene) Stunde halber Tarifsatz nach RATG. Bruchstunden werden auf die nächste ganze Stunde aufgerundet.
 
-## Acknowledgments
+### Bibliotheks-API
 
-- Thanks to all contributors
+```python
+from gerichtskostennote import (
+    pauschalgebuehr, Ermaessigung,                # GGG
+    tarifsatz, einheitssatz, streitgenossenzuschlag,  # RATG
+)
+
+# --- GGG: Pauschalgebühr ---
+pauschalgebuehr("1", 25_000)                         # Decimal('974')
+pauschalgebuehr("1", 25_000, valorized=False)        # Decimal('792') — Gesetzeswert
+pauschalgebuehr(
+    "1", 25_000, ermaessigung=Ermaessigung.RUECKZIEHUNG_VOR_ZUSTELLUNG
+)                                                    # Decimal('243.50')
+pauschalgebuehr("4Ia", 100_000)                      # Decimal('450')
+
+# --- RATG: Anwaltskosten für eine Klage, Streitwert 15 000 EUR, zwei Kläger ---
+sw = 15_000
+verdienst = tarifsatz("3a", sw)                      # Decimal('487.00')
+es        = einheitssatz(sw, verdienst)              # Decimal('243.50') — 50 %
+sg        = streitgenossenzuschlag(verdienst + es, anzahl_personen_einer_seite=2)
+                                                     # Decimal('73.05') — 10 %
+# Klagekosten exkl. USt/Auslagen: 803.55 EUR
+```
+
+GGG-Tarifpost-Keys: `"1"`, `"2"`, `"3a"`, `"3b"`, `"4Ia"`, `"4Ib"`, `"4IIa"`, `"4IIb"`, `"4IIIa"`, `"4IIIb"`.
+RATG-Tarifpost-Keys: `"1"`, `"2"`, `"3a"` (TP 3 Teil A — Klage/1. Instanz), `"3b"` (TP 3 Teil B — Berufung/Rekurs), `"3c"` (TP 3 Teil C — Revision/OGH).
+
+Beispiel-Eingaben: [`klage_15000.json`](examples/klage_15000.json) (Klage 1. Instanz), [`berufung_50000.json`](examples/berufung_50000.json) (Berufung).
+
+Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data/`). Editable-Install (`pip install -e .`) ist daher derzeit empfohlen.
+
+## Roadmap
+
+- [x] GGG TP 1–4 strukturiert erfassen
+- [x] Python-Modul `gerichtskostennote` mit Tests gegen Worked Examples aus dem GGG
+- [x] RATG TP 1, 2, 3 Teil A + § 23 Einheitssatz + § 15 Streitgenossenzuschlag
+- [x] CLI `gkn` + Markdown-Renderer (Eingabe Streitwert/Leistungen → vollständige Kostennote)
+- [x] PDF-Renderer (ReportLab Platypus, A4-Layout)
+- [x] RATG TP 3 Teil B (Berufung/Rekurs) + Teil C (Revision/OGH)
+- [x] § 23a RATG: ERV-Erhöhung (Web-ERV, 5,00 / 2,60 / 9,50 EUR valorisiert)
+- [ ] RATG TP 3A (Exekutionsverfahren), TP 4–9
+- [ ] § 23 Abs. 5–10 RATG (Verdoppelung/Verdreifachung des Einheitssatzes in Spezialfällen), § 23a (ERV)
+- [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)
+- [ ] GGG TP 9–15 (Eintragungs- und Justizverwaltungsgebühren)
+
+## Quellen
+
+Die Tarifdaten sind aus den RIS-Konsolidaten (Bundeskanzleramt Österreich) extrahiert. URL-Muster für die Geltende Fassung:
+
+- GGG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002651>
+- RATG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002603>
+
+Die Valorisierung erfolgt durch Verordnung der Bundesministerin für Justiz nach § 31a GGG, zuletzt **BGBl. II Nr. 51/2025** (in Kraft 1.4.2025).
+
+## Mitwirken
+
+Siehe [CONTRIBUTING.md](CONTRIBUTING.md). Korrekturen an Tarifwerten sind besonders willkommen — bitte mit Verweis auf RIS-Fundstelle.
+
+## Lizenz
+
+MIT — siehe [LICENSE](LICENSE). Die im Repo abgelegten RIS-Konsolidate sind Bundesrecht und gemeinfrei (§ 7 UrhG).
+
+## Haftung
+
+Dieses Projekt liefert Werkzeuge, kein Rechtsanwalt-Ersatz. Tarifwerte können sich durch Novellen oder Valorisierungsverordnungen jederzeit ändern. Vor Einreichung einer Kostennote eigene Prüfung erforderlich.

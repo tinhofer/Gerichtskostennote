@@ -1,0 +1,67 @@
+{
+  "tarifpost": "4",
+  "law": "GGG",
+  "title": "Pauschalgebühren im Exekutionsverfahren",
+  "section": "Tarif II. Exekutionsverfahren",
+  "basis": "Wert des Streitgegenstandes (durchzusetzender/zu sichernder Anspruch)",
+  "source": "GGG idgF, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 51/2025 ab 1.4.2025)",
+  "currency": "EUR",
+  "Z_I": {
+    "description": "Erstinstanzliche Pauschalgebühren im Exekutionsverfahren",
+    "lit_a": {
+      "description": "Exekutionsverfahren nach Streitwert",
+      "brackets": [
+        { "ueber": 0,     "bis": 150,   "betrag_gesetz": 28,  "betrag_ab_2025_04_01": 34,  "anmerkung": 1 },
+        { "ueber": 150,   "bis": 300,   "betrag_gesetz": 50,  "betrag_ab_2025_04_01": 62,  "anmerkung": 2 },
+        { "ueber": 300,   "bis": 700,   "betrag_gesetz": 60,  "betrag_ab_2025_04_01": 74,  "anmerkung": 3 },
+        { "ueber": 700,   "bis": 2000,  "betrag_gesetz": 80,  "betrag_ab_2025_04_01": 98,  "anmerkung": 4 },
+        { "ueber": 2000,  "bis": 3500,  "betrag_gesetz": 100, "betrag_ab_2025_04_01": 123, "anmerkung": 5 },
+        { "ueber": 3500,  "bis": 7000,  "betrag_gesetz": 150, "betrag_ab_2025_04_01": 185, "anmerkung": 6 },
+        { "ueber": 7000,  "bis": 35000, "betrag_gesetz": 200, "betrag_ab_2025_04_01": 246, "anmerkung": 7 },
+        { "ueber": 35000, "bis": 70000, "betrag_gesetz": 300, "betrag_ab_2025_04_01": 369, "anmerkung": 8 }
+      ],
+      "ueber_70000": {
+        "formel": "Sockel zuzüglich 2,7 Promille vom über 70 000 Euro liegenden Teil des Streitgegenstands",
+        "promille_ueberschiessend": 2.7,
+        "sockel_gesetz": 300,
+        "sockel_ab_2025_04_01": 369,
+        "anmerkung": 8
+      }
+    },
+    "lit_b": {
+      "description": "Anträge auf Bestätigung als Europäischer Vollstreckungstitel (§ 419 EO)",
+      "betrag_gesetz": 15,
+      "betrag_ab_2025_04_01": 18,
+      "anmerkung": 9
+    }
+  },
+  "Z_II": {
+    "description": "Pauschalgebühren im Rechtsmittelverfahren zweiter Instanz (Rekurse)",
+    "lit_a": {
+      "description": "Rekursinteresse nach Z I lit. a Stufen",
+      "formel": "150% der in Z I lit. a angeführten Gebühren"
+    },
+    "lit_b": {
+      "description": "Rekurse gegen Entscheidungen nach Z I lit. b",
+      "betrag_gesetz": 31,
+      "betrag_ab_2025_04_01": 38,
+      "anmerkung": 10
+    }
+  },
+  "Z_III": {
+    "description": "Pauschalgebühren im Rechtsmittelverfahren dritter Instanz (Revisionsrekurse)",
+    "lit_a": {
+      "description": "Revisionsrekursinteresse nach Z I lit. a Stufen",
+      "formel": "200% der in Z I lit. a angeführten Gebühren"
+    },
+    "lit_b": {
+      "description": "Revisionsrekurse gegen Entscheidungen nach Z II lit. b",
+      "betrag_gesetz": 46,
+      "betrag_ab_2025_04_01": 57,
+      "anmerkung": 11
+    }
+  },
+  "ermaessigungen": {
+    "rueckziehung_vor_bewilligung": { "faktor": 0.5, "quelle": "Anm. 2" }
+  }
+}

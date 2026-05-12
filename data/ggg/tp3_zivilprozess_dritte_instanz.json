@@ -1,0 +1,48 @@
+{
+  "tarifpost": "3",
+  "law": "GGG",
+  "title": "Pauschalgebühren für das Rechtsmittelverfahren dritter Instanz und für Klagen nach § 615 ZPO",
+  "section": "Tarif I. Zivilprozesse",
+  "basis": "Revisionsinteresse",
+  "source": "GGG idgF, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 51/2025 ab 1.4.2025)",
+  "currency": "EUR",
+  "lit_a": {
+    "description": "Rechtsmittelverfahren dritter Instanz",
+    "brackets": [
+      { "ueber": 0,      "bis": 2000,   "betrag_gesetz": 228,   "betrag_ab_2025_04_01": 281,   "anmerkung": 1 },
+      { "ueber": 2000,   "bis": 3500,   "betrag_gesetz": 381,   "betrag_ab_2025_04_01": 469,   "anmerkung": 2 },
+      { "ueber": 3500,   "bis": 7000,   "betrag_gesetz": 762,   "betrag_ab_2025_04_01": 938,   "anmerkung": 3 },
+      { "ueber": 7000,   "bis": 35000,  "betrag_gesetz": 1526,  "betrag_ab_2025_04_01": 1878,  "anmerkung": 4 },
+      { "ueber": 35000,  "bis": 70000,  "betrag_gesetz": 3051,  "betrag_ab_2025_04_01": 3754,  "anmerkung": 5 },
+      { "ueber": 70000,  "bis": 140000, "betrag_gesetz": 6104,  "betrag_ab_2025_04_01": 7510,  "anmerkung": 6 },
+      { "ueber": 140000, "bis": 210000, "betrag_gesetz": 9156,  "betrag_ab_2025_04_01": 11265, "anmerkung": 7 },
+      { "ueber": 210000, "bis": 280000, "betrag_gesetz": 12211, "betrag_ab_2025_04_01": 15024, "anmerkung": 8 },
+      { "ueber": 280000, "bis": 350000, "betrag_gesetz": 15263, "betrag_ab_2025_04_01": 18779, "anmerkung": 9 }
+    ],
+    "ueber_350000": {
+      "formel": "2,4% vom jeweiligen Revisionsinteresse zuzüglich Sockelbetrag",
+      "prozentsatz": 2.4,
+      "sockel_gesetz": 8096,
+      "sockel_ab_2025_04_01": 13477,
+      "anmerkung": 10
+    }
+  },
+  "lit_b": {
+    "description": "Klagen, die gemäß § 615 ZPO in die Zuständigkeit des OGH fallen",
+    "formel": "5% vom Streitwert, mindestens Sockelbetrag",
+    "prozentsatz": 5.0,
+    "mindestbetrag_gesetz": 5884,
+    "mindestbetrag_ab_2025_04_01": 7239,
+    "anmerkung": 11
+  },
+  "spezialgebuehren": {
+    "jn_49_2_2a_2b": {
+      "betrag_gesetz": 545,
+      "betrag_ab_2025_04_01": 671,
+      "quelle": "Anm. 6 / Anm. 12"
+    }
+  },
+  "ermaessigungen": {
+    "einstweilige_verfuegung": { "faktor": 0.5, "quelle": "Anm. 1a" }
+  }
+}

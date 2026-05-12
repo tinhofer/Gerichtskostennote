@@ -1,0 +1,34 @@
+{
+  "tarifpost": "3A",
+  "law": "RATG Anl. 1",
+  "title": "TP 3 Teil A — Klagen, Klagebeantwortungen, weitere Schriftsätze 1. Instanz; Tagsatzungen",
+  "basis": "Bemessungsgrundlage",
+  "source": "RATG Anl. 1, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 131/2023 ab 1.5.2023)",
+  "currency": "EUR",
+  "brackets": [
+    { "ueber": 0,    "bis": 40,    "betrag_gesetz": 23.30,  "betrag_ab_2023_05_01": 35.10,  "anmerkung": 1 },
+    { "ueber": 40,   "bis": 70,    "betrag_gesetz": 34.90,  "betrag_ab_2023_05_01": 52.50,  "anmerkung": 2 },
+    { "ueber": 70,   "bis": 110,   "betrag_gesetz": 46.40,  "betrag_ab_2023_05_01": 69.80,  "anmerkung": 3 },
+    { "ueber": 110,  "bis": 180,   "betrag_gesetz": 51.20,  "betrag_ab_2023_05_01": 76.80,  "anmerkung": 4 },
+    { "ueber": 180,  "bis": 360,   "betrag_gesetz": 58.00,  "betrag_ab_2023_05_01": 87.00,  "anmerkung": 5 },
+    { "ueber": 360,  "bis": 730,   "betrag_gesetz": 69.60,  "betrag_ab_2023_05_01": 104.60, "anmerkung": 6 },
+    { "ueber": 730,  "bis": 1090,  "betrag_gesetz": 92.70,  "betrag_ab_2023_05_01": 139.10, "anmerkung": 7 },
+    { "ueber": 1090, "bis": 1820,  "betrag_gesetz": 104.10, "betrag_ab_2023_05_01": 156.20, "anmerkung": 8 },
+    { "ueber": 1820, "bis": 3630,  "betrag_gesetz": 115.80, "betrag_ab_2023_05_01": 173.80, "anmerkung": 9 },
+    { "ueber": 3630, "bis": 5450,  "betrag_gesetz": 138.90, "betrag_ab_2023_05_01": 208.20, "anmerkung": 10 },
+    { "ueber": 5450, "bis": 7270,  "betrag_gesetz": 173.50, "betrag_ab_2023_05_01": 260.20, "anmerkung": 11 },
+    { "ueber": 7270, "bis": 10170, "betrag_gesetz": 231.20, "betrag_ab_2023_05_01": 346.60, "anmerkung": 12 }
+  ],
+  "step_per_1450_above_10170": {
+    "betrag_gesetz": 23.30,
+    "betrag_ab_2023_05_01": 35.10,
+    "anmerkung": 1
+  },
+  "promille_36340_to_363360_vT": 1.0,
+  "promille_above_363360_vT": 0.5,
+  "cap": {
+    "betrag_gesetz": 13860.20,
+    "betrag_ab_2023_05_01": 20770.60,
+    "anmerkung": 13
+  }
+}

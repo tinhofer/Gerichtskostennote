@@ -1,0 +1,64 @@
+{
+  "law": "Rechtsanwaltstarifgesetz (RATG), Anlage 1 (Tarif)",
+  "jurisdiction": "AT",
+  "source_documents": [
+    "20260414 Rechtsanwaltstarifgesetz _gesamt.pdf",
+    "20260414 RIS - Rechtsanwaltstarifgesetz Anl. 1 - Bundesrecht konsolidiert.pdf"
+  ],
+  "source_url_pattern": "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002143",
+  "stand": "2026-04-14",
+  "valorisierung": {
+    "verordnung_aktuell": "BGBl. II Nr. 131/2023",
+    "wirksam_ab": "2023-05-01",
+    "verordnung_vorgaenger": "BGBl. II Nr. 393/2015 (ab 2016-01-01)",
+    "hinweis": "Felder 'betrag_ab_2023_05_01' enthalten die aktuell zu zahlenden Beträge. Felder 'betrag_gesetz' sind die im RATG-Tarif selbst angeführten Werte."
+  },
+  "shared_bracket_breakpoints": [
+    40, 70, 110, 180, 360, 730, 1090, 1820, 3630, 5450, 7270, 10170
+  ],
+  "shared_overflow_rules": {
+    "incremental_step_lower": 10170,
+    "incremental_step_upper": 34820,
+    "incremental_step_size": 1450,
+    "extra_step_lower": 34820,
+    "extra_step_upper": 36340,
+    "promille_lower_threshold": 36340,
+    "promille_lower_upper": 363360,
+    "promille_upper_threshold": 363360,
+    "hinweis": "Über 10 170 EUR: pro angefangene 1 450 EUR ein Schritt um den TP-spezifischen 'step_amount' (= Anm. 1) mehr. Über 34 820 EUR bis 36 340 EUR: ein zusätzlicher Schritt. Darüber: Promillesatz vom Mehrbetrag (zwei Stufen)."
+  },
+  "tarifposten": [
+    {
+      "id": "tp1",
+      "file": "tp1.json",
+      "scope": "Schriftsätze einfacher Art (z. B. Mitteilungen, Anträge auf Kostenbestimmung)"
+    },
+    {
+      "id": "tp2",
+      "file": "tp2.json",
+      "scope": "Saldoklagen, Klagebeantwortungen kurz, Tagsatzungen kurz"
+    },
+    {
+      "id": "tp3a",
+      "file": "tp3a.json",
+      "scope": "TP 3 Teil A — Klagen, Klagebeantwortungen, weitere Schriftsätze 1. Instanz; Tagsatzungen"
+    },
+    {
+      "id": "tp3b",
+      "file": "tp3b.json",
+      "scope": "TP 3 Teil B — Berufungen, Berufungsbeantwortungen, Rekurse, Rekursbeantwortungen, Beschwerden"
+    },
+    {
+      "id": "tp3c",
+      "file": "tp3c.json",
+      "scope": "TP 3 Teil C — Revisionen, Revisionsrekurse, Rekurse an den OGH"
+    }
+  ],
+  "open_items": [
+    "TP 3A (Exekutionsverfahren)",
+    "TP 4 (Strafverfahren), TP 5 (Reisekosten), TP 6 (Schreibgebühren)",
+    "TP 7 (außergerichtliche Leistungen), TP 8 (Stundensätze), TP 9 (Verfahrenshilfe)",
+    "§ 23 Abs. 5–10 RATG: besondere Doppelungs-/Verdreifachungsregeln des Einheitssatzes",
+    "§ 23a RATG: ERV-Erhöhung"
+  ]
+}
