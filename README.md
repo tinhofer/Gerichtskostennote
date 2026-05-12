@@ -19,38 +19,53 @@ Werkzeuge und strukturierte Daten zur Berechnung einer **Gerichtskostennote** na
 | `20260414 Rechtsanwaltstarifgesetz _gesamt.pdf` | RIS-Konsolidat RATG, Stand 14.04.2026 |
 | `20260414 RIS - Rechtsanwaltstarifgesetz Anl. 1 - Bundesrecht konsolidiert.pdf` | RATG Anlage 1 (Tarif) |
 
-Siehe [`data/ggg/README.md`](data/ggg/README.md) für die Tarifdaten-Struktur.
+Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](data/ratg/README.md) für die Tarifdaten-Struktur.
 
 ## Installation & Verwendung
 
 ```bash
 pip install -e .              # Bibliothek im Editable-Modus
 pip install -e ".[test]"      # mit pytest
-python -m pytest              # 38 Tests gegen TP 1–4
+python -m pytest              # 78 Tests (GGG TP 1–4 + RATG TP 1/2/3A, § 23, § 15)
 ```
 
 ```python
-from gerichtskostennote import pauschalgebuehr, Ermaessigung
+from gerichtskostennote import (
+    pauschalgebuehr, Ermaessigung,                # GGG
+    tarifsatz, einheitssatz, streitgenossenzuschlag,  # RATG
+)
 
+# --- GGG: Pauschalgebühr ---
 pauschalgebuehr("1", 25_000)                         # Decimal('974')
 pauschalgebuehr("1", 25_000, valorized=False)        # Decimal('792') — Gesetzeswert
 pauschalgebuehr(
     "1", 25_000, ermaessigung=Ermaessigung.RUECKZIEHUNG_VOR_ZUSTELLUNG
-)                                                    # Decimal('243.50') — TP 1 Anm. 3
-pauschalgebuehr("4Ia", 100_000)                      # Decimal('450') — 369 + 2,7‰ × 30 000
+)                                                    # Decimal('243.50')
+pauschalgebuehr("4Ia", 100_000)                      # Decimal('450')
+
+# --- RATG: Anwaltskosten für eine Klage, Streitwert 15 000 EUR, zwei Kläger ---
+sw = 15_000
+verdienst = tarifsatz("3a", sw)                      # Decimal('487.00')
+es        = einheitssatz(sw, verdienst)              # Decimal('243.50') — 50 %
+sg        = streitgenossenzuschlag(verdienst + es, anzahl_personen_einer_seite=2)
+                                                     # Decimal('73.05') — 10 %
+# Klagekosten exkl. USt/Auslagen: 803.55 EUR
 ```
 
-Unterstützte Tarifpost-Keys: `"1"`, `"2"`, `"3a"`, `"3b"`, `"4Ia"`, `"4Ib"`, `"4IIa"`, `"4IIb"`, `"4IIIa"`, `"4IIIb"`.
+GGG-Tarifpost-Keys: `"1"`, `"2"`, `"3a"`, `"3b"`, `"4Ia"`, `"4Ib"`, `"4IIa"`, `"4IIb"`, `"4IIIa"`, `"4IIIb"`.
+RATG-Tarifpost-Keys: `"1"`, `"2"`, `"3a"` (TP 3 Teil A).
 
-Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data/ggg/`). Editable-Install (`pip install -e .`) ist daher derzeit empfohlen; eine vollwertige Paketauslieferung kommt mit der RATG-Integration.
+Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data/`). Editable-Install (`pip install -e .`) ist daher derzeit empfohlen.
 
 ## Roadmap
 
 - [x] GGG TP 1–4 strukturiert erfassen
 - [x] Python-Modul `gerichtskostennote` mit Tests gegen Worked Examples aus dem GGG
+- [x] RATG TP 1, 2, 3 Teil A + § 23 Einheitssatz + § 15 Streitgenossenzuschlag
+- [ ] RATG TP 3 Teil B/C (Berufung/Revision), TP 3A (Exekutionsverfahren), TP 4–9
+- [ ] § 23 Abs. 5–10 RATG (Verdoppelung/Verdreifachung des Einheitssatzes in Spezialfällen), § 23a (ERV)
 - [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)
 - [ ] GGG TP 9–15 (Eintragungs- und Justizverwaltungsgebühren)
-- [ ] RATG Tarifposten + Einheitssatz + Streitgenossenzuschlag als JSON
 - [ ] CLI `gkn` (Eingabe Streitwert/Verfahren → Note)
 - [ ] Markdown- und PDF-Renderer
 

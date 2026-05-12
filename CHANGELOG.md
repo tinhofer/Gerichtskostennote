@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- RATG-Modul `gerichtskostennote.ratg` mit `tarifsatz()`, `einheitssatz()` und
+  `streitgenossenzuschlag()`. Cent-Präzision (Decimal, HALF_UP). Implementiert
+  RATG Anl. 1 TP 1, TP 2, TP 3 Teil A inklusive der inkrementellen Stufe
+  (je 1 450 EUR ein Schritt), Promille-Stufen oberhalb 36 340 EUR
+  und Cap.
+- 40 zusätzliche pytest-Worked-Example-Tests in `tests/test_ratg.py`
+  (Bracket-Lookups, inkrementelle Stufe, Promille-Stufen, Cap-Verhalten,
+  § 23 Einheitssatz mit 60 %/50 %-Stufen und Multiplikator,
+  § 15 Streitgenossenzuschlag inkl. 50 %-Obergrenze, plus ein
+  Integrations-Smoke-Test für eine Klage-Kostenposition).
+- RATG-Tarifdaten in `data/ratg/`: `tp1.json`, `tp2.json`, `tp3a.json`,
+  `einheitssatz.json`, `streitgenossenzuschlag.json`, `index.json` und
+  `README.md`. Stand 14.04.2026; valorisiert nach BGBl. II Nr. 131/2023
+  (in Kraft 1.5.2023).
 - Python-Paket `gerichtskostennote` (`src/gerichtskostennote/`) mit GGG-
   Pauschalgebührenrechner für TP 1–4. Öffentliche API: `pauschalgebuehr()`,
   `Tarifpost`, `Ermaessigung`, `TarifpostNotFound`.

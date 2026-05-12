@@ -1,0 +1,28 @@
+{
+  "norm": "§ 23 RATG",
+  "title": "Einheitssatz für Nebenleistungen",
+  "scope_tarifposten": ["1", "2", "3", "4", "7"],
+  "thresholds": [
+    {
+      "streitwert_bis_einschliesslich": 10170,
+      "satz_prozent": 60.0,
+      "anmerkung": "§ 23 Abs. 3 RATG erste Stufe"
+    },
+    {
+      "streitwert_ueber": 10170,
+      "satz_prozent": 50.0,
+      "anmerkung": "§ 23 Abs. 3 RATG zweite Stufe"
+    }
+  ],
+  "ausgeschlossen_von_basis": [
+    "Reisekosten",
+    "Entschädigung für Zeitversäumnis",
+    "sonstige Auslagen"
+  ],
+  "spezialregeln_nicht_implementiert": [
+    "§ 23 Abs. 5 RATG: Verdoppelung bei Vornahme außerhalb des Kanzleisitzes",
+    "§ 23 Abs. 6/7 RATG: Verdoppelung bei bedingtem Zahlungsbefehl",
+    "§ 23 Abs. 8 RATG: Verdoppelung für Exekutionsbewilligungsanträge",
+    "§ 23 Abs. 9/10 RATG: Verdreifachung/Vervierfachung im Berufungsverfahren ohne Beweisaufnahme"
+  ]
+}
