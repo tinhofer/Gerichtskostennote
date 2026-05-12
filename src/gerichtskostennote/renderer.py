@@ -114,8 +114,15 @@ def compute(payload: dict[str, Any]) -> Kostennote:
 
     ust = Decimal(str(payload.get("umsatzsteuer_prozent", 20)))
     default_personen = int(payload.get("default_personen_einer_seite", 1))
+    default_fahrtkosten_raw = payload.get("default_fahrtkosten")
+    default_fahrtkosten = (
+        Decimal(str(default_fahrtkosten_raw))
+        if default_fahrtkosten_raw is not None
+        else None
+    )
 
     rows: list[_LeistungRow] = []
+    auto_auslagen: list[_BarauslageRow] = []
     for raw in payload.get("anwaltsleistungen", []):
         tp = raw["tp"]
         n_personen = int(raw.get("personen_einer_seite", default_personen))
@@ -153,7 +160,37 @@ def compute(payload: dict[str, Any]) -> Kostennote:
             )
         )
 
-    auslagen_rows: list[_BarauslageRow] = []
+        # Per-Leistung Fahrtkosten → Barauslage.
+        fahrt = raw.get("fahrtkosten")
+        if fahrt:  # truthy (True, non-zero number, etc.)
+            if fahrt is True:
+                if default_fahrtkosten is None:
+                    raise InputError(
+                        "Anwaltsleistung enthält 'fahrtkosten: true', aber das "
+                        "Pflichtfeld 'default_fahrtkosten' fehlt im Top-Level."
+                    )
+                fahrt_betrag = default_fahrtkosten
+            else:
+                fahrt_betrag = Decimal(str(fahrt))
+            if fahrt_betrag < 0:
+                raise InputError(
+                    "Fahrtkosten dürfen nicht negativ sein"
+                )
+            descr_prefix = raw.get("beschreibung", "").strip()
+            descr = (
+                f"Fahrtkosten {descr_prefix}".strip()
+                if descr_prefix
+                else "Fahrtkosten"
+            )
+            auto_auslagen.append(
+                _BarauslageRow(
+                    datum=raw.get("datum"),
+                    beschreibung=descr,
+                    betrag=_q(fahrt_betrag),
+                )
+            )
+
+    auslagen_rows: list[_BarauslageRow] = list(auto_auslagen)
     for raw in payload.get("barauslagen", []):
         try:
             betrag = Decimal(str(raw["betrag"]))

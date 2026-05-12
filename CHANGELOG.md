@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Fahrtkosten-Shortcut** im Kostennote-Schema: Top-level
+  `default_fahrtkosten` definiert den Standardbetrag (z. B. EUR 4,80 pro
+  Gerichtsbehandlung). Pro Anwaltsleistung kann `fahrtkosten: true` (=
+  Default) oder ein eigener Wert gesetzt werden. Es wird automatisch eine
+  Barauslage-Position „Fahrtkosten &lt;Leistungsbeschreibung>" mit dem
+  passenden Datum erzeugt. Fehlt oder `false` → keine Fahrtkosten — passt
+  für auswärtige Verhandlungen, bei denen statt Fahrtkosten der doppelte
+  Einheitssatz nach § 23 Abs. 5 RATG (`einheitssatz_multiplier: 2`)
+  zusteht. 7 neue Tests, alle 140 grün.
 - **Barauslagen-Sektion** im Kostennote-Schema und Renderer (Markdown + PDF).
   Eingabe als Liste `barauslagen` mit `betrag` (Pflicht), `beschreibung` und
   `datum` (optional). Werden ohne USt in die Gesamtsumme aufgenommen und

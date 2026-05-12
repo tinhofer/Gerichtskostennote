@@ -268,6 +268,132 @@ def test_render_markdown_omits_barauslagen_section_when_empty() -> None:
     assert "## Barauslagen" not in md
 
 
+# ---------------------------------------------------------------------------
+# Per-Leistung Fahrtkosten + default_fahrtkosten
+# ---------------------------------------------------------------------------
+
+
+def test_per_leistung_fahrtkosten_with_default() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "default_fahrtkosten": 4.80,
+            "anwaltsleistungen": [
+                {"tp": "3a", "beschreibung": "Streitverhandlung", "fahrtkosten": True}
+            ],
+        }
+    )
+    assert len(note.barauslagen) == 1
+    assert note.barauslagen[0].betrag == Decimal("4.80")
+    assert "Fahrtkosten" in note.barauslagen[0].beschreibung
+    assert "Streitverhandlung" in note.barauslagen[0].beschreibung
+
+
+def test_per_leistung_fahrtkosten_explicit_amount_overrides_default() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "default_fahrtkosten": 4.80,
+            "anwaltsleistungen": [
+                {"tp": "3a", "beschreibung": "Verhandlung Linz", "fahrtkosten": 28.50}
+            ],
+        }
+    )
+    assert note.barauslagen[0].betrag == Decimal("28.50")
+
+
+def test_per_leistung_fahrtkosten_true_without_default_rejected() -> None:
+    with pytest.raises(InputError):
+        compute(
+            {
+                "streitwert": 5000,
+                "anwaltsleistungen": [
+                    {"tp": "3a", "beschreibung": "X", "fahrtkosten": True}
+                ],
+            }
+        )
+
+
+def test_per_leistung_fahrtkosten_missing_means_no_barauslage() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "default_fahrtkosten": 4.80,
+            "anwaltsleistungen": [
+                # Kein fahrtkosten-Feld → keine Auslage.
+                {"tp": "3a", "beschreibung": "Schriftsatz"}
+            ],
+        }
+    )
+    assert note.barauslagen == []
+
+
+def test_per_leistung_fahrtkosten_false_suppresses() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "default_fahrtkosten": 4.80,
+            "anwaltsleistungen": [
+                {"tp": "3a", "beschreibung": "Auswärtige Verhandlung", "fahrtkosten": False}
+            ],
+        }
+    )
+    assert note.barauslagen == []
+
+
+def test_mixed_local_and_auswaertig_verhandlungen() -> None:
+    """User-Szenario: Wien-Verhandlung mit Fahrtkosten + einfachem ES,
+    auswärtige (St. Pölten) ohne Fahrtkosten aber mit doppeltem ES."""
+    note = compute(
+        {
+            "streitwert": 5000,
+            "default_fahrtkosten": 4.80,
+            "anwaltsleistungen": [
+                {
+                    "tp": "3a",
+                    "beschreibung": "Streitverhandlung Wien",
+                    "fahrtkosten": True,
+                },
+                {
+                    "tp": "3a",
+                    "beschreibung": "Streitverhandlung St. Pölten",
+                    "einheitssatz_multiplier": 2,
+                },
+            ],
+        }
+    )
+    # Wien: 208.20 + ES 124.92 (60 %) + 0 + 0 = 333.12
+    # St. Pölten: 208.20 + ES 249.84 (doppelt) + 0 + 0 = 458.04
+    assert note.leistungen[0].einheitssatz == Decimal("124.92")
+    assert note.leistungen[0].netto == Decimal("333.12")
+    assert note.leistungen[1].einheitssatz == Decimal("249.84")
+    assert note.leistungen[1].netto == Decimal("458.04")
+    # Nur Wien-Verhandlung erzeugt eine Fahrtkosten-Auslage.
+    assert len(note.barauslagen) == 1
+    assert note.barauslagen[0].betrag == Decimal("4.80")
+    assert "Wien" in note.barauslagen[0].beschreibung
+
+
+def test_auto_fahrtkosten_and_explicit_barauslagen_combine() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "default_fahrtkosten": 4.80,
+            "anwaltsleistungen": [
+                {"tp": "3a", "beschreibung": "Streitverhandlung", "fahrtkosten": True}
+            ],
+            "barauslagen": [
+                {"beschreibung": "Porto", "betrag": 1.50}
+            ],
+        }
+    )
+    assert len(note.barauslagen) == 2
+    # Auto-generierte Fahrtkosten kommen zuerst, dann explizite Auslagen.
+    assert note.barauslagen[0].beschreibung.startswith("Fahrtkosten")
+    assert note.barauslagen[1].beschreibung == "Porto"
+    assert note.barauslagen_summe == Decimal("6.30")
+
+
 def test_render_markdown_shows_erv_summary() -> None:
     note = compute(
         {
