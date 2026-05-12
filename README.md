@@ -21,29 +21,36 @@ Werkzeuge und strukturierte Daten zur Berechnung einer **Gerichtskostennote** na
 
 Siehe [`data/ggg/README.md`](data/ggg/README.md) für die Tarifdaten-Struktur.
 
-## Schnellbeispiel (manuell, ohne Bibliothek)
+## Installation & Verwendung
 
-Streitwert 25.000 EUR, Zivilprozess 1. Instanz, kein Rückzug, keine Sonderregel:
-
-→ Stufe TP 1: „über 7.000 Euro bis 35.000 Euro" → **974 EUR** (valorisiert ab 1.4.2025, BGBl. II Nr. 51/2025).
-
-```json
-{
-  "ueber": 7000,
-  "bis": 35000,
-  "betrag_gesetz": 792,
-  "betrag_ab_2025_04_01": 974,
-  "anmerkung": 7
-}
+```bash
+pip install -e .              # Bibliothek im Editable-Modus
+pip install -e ".[test]"      # mit pytest
+python -m pytest              # 38 Tests gegen TP 1–4
 ```
+
+```python
+from gerichtskostennote import pauschalgebuehr, Ermaessigung
+
+pauschalgebuehr("1", 25_000)                         # Decimal('974')
+pauschalgebuehr("1", 25_000, valorized=False)        # Decimal('792') — Gesetzeswert
+pauschalgebuehr(
+    "1", 25_000, ermaessigung=Ermaessigung.RUECKZIEHUNG_VOR_ZUSTELLUNG
+)                                                    # Decimal('243.50') — TP 1 Anm. 3
+pauschalgebuehr("4Ia", 100_000)                      # Decimal('450') — 369 + 2,7‰ × 30 000
+```
+
+Unterstützte Tarifpost-Keys: `"1"`, `"2"`, `"3a"`, `"3b"`, `"4Ia"`, `"4Ib"`, `"4IIa"`, `"4IIb"`, `"4IIIa"`, `"4IIIb"`.
+
+Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data/ggg/`). Editable-Install (`pip install -e .`) ist daher derzeit empfohlen; eine vollwertige Paketauslieferung kommt mit der RATG-Integration.
 
 ## Roadmap
 
 - [x] GGG TP 1–4 strukturiert erfassen
+- [x] Python-Modul `gerichtskostennote` mit Tests gegen Worked Examples aus dem GGG
 - [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)
 - [ ] GGG TP 9–15 (Eintragungs- und Justizverwaltungsgebühren)
 - [ ] RATG Tarifposten + Einheitssatz + Streitgenossenzuschlag als JSON
-- [ ] Python-Modul `gerichtskostennote` mit Tests gegen Worked Examples aus dem GGG
 - [ ] CLI `gkn` (Eingabe Streitwert/Verfahren → Note)
 - [ ] Markdown- und PDF-Renderer
 
