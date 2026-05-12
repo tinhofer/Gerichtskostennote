@@ -24,10 +24,46 @@ Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](dat
 ## Installation & Verwendung
 
 ```bash
-pip install -e .              # Bibliothek im Editable-Modus
+pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
 pip install -e ".[test]"      # mit pytest
-python -m pytest              # 78 Tests (GGG TP 1–4 + RATG TP 1/2/3A, § 23, § 15)
+python -m pytest              # 94 Tests (GGG TP 1–4 + RATG TP 1/2/3A + Renderer/CLI)
 ```
+
+### CLI: vollständige Kostennote aus JSON
+
+```bash
+gkn examples/klage_15000.json                  # nach stdout
+gkn examples/klage_15000.json -o kosten.md     # in Datei
+python -m gerichtskostennote -                  # liest JSON von stdin
+```
+
+Eingabe-Schema (siehe [`examples/klage_15000.json`](examples/klage_15000.json)):
+
+```json
+{
+  "title": "Kostennote",
+  "header": {
+    "aktenzeichen": "1 Cg 123/26x",
+    "gericht": "BG Innere Stadt Wien",
+    "klaeger": ["Hans Mustermann", "Maria Mustermann"],
+    "beklagter": ["XYZ GmbH"],
+    "stand": "2026-05-12"
+  },
+  "streitwert": 15000,
+  "umsatzsteuer_prozent": 20,
+  "default_personen_einer_seite": 2,
+  "anwaltsleistungen": [
+    { "datum": "2026-03-15", "tp": "3a", "beschreibung": "Klage" }
+  ],
+  "gerichtsgebuehren": [
+    { "tp": "1", "beschreibung": "Pauschalgebühr Klage 1. Instanz" }
+  ]
+}
+```
+
+Optional je Anwaltsleistung: `personen_einer_seite`, `weitere_personen_andere_seite`, `einheitssatz_multiplier` (für § 23 Abs. 5–9 RATG Spezialfälle). Je Gerichtsgebühr: `ermaessigung` (`rueckziehung_vor_zustellung`, `rueckziehung_erste_tagsatzung`, `einstweilige_verfuegung`, `rueckziehung_vor_bewilligung`) und `bemessungsgrundlage` (falls vom Streitwert abweichend).
+
+### Bibliotheks-API
 
 ```python
 from gerichtskostennote import (
@@ -62,12 +98,12 @@ Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data
 - [x] GGG TP 1–4 strukturiert erfassen
 - [x] Python-Modul `gerichtskostennote` mit Tests gegen Worked Examples aus dem GGG
 - [x] RATG TP 1, 2, 3 Teil A + § 23 Einheitssatz + § 15 Streitgenossenzuschlag
+- [x] CLI `gkn` + Markdown-Renderer (Eingabe Streitwert/Leistungen → vollständige Kostennote)
 - [ ] RATG TP 3 Teil B/C (Berufung/Revision), TP 3A (Exekutionsverfahren), TP 4–9
 - [ ] § 23 Abs. 5–10 RATG (Verdoppelung/Verdreifachung des Einheitssatzes in Spezialfällen), § 23a (ERV)
 - [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)
 - [ ] GGG TP 9–15 (Eintragungs- und Justizverwaltungsgebühren)
-- [ ] CLI `gkn` (Eingabe Streitwert/Verfahren → Note)
-- [ ] Markdown- und PDF-Renderer
+- [ ] PDF-Renderer (z. B. via Pandoc / WeasyPrint)
 
 ## Quellen
 

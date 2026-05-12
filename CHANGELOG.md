@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- CLI `gkn` (Konsolen-Skript `gerichtskostennote.cli:main`) und Markdown-
+  Renderer (`gerichtskostennote.renderer`). Liest eine JSON-Beschreibung einer
+  Kostennote (Streitwert, Anwaltsleistungen, Gerichtsgebühren, Header) und
+  erzeugt ein vollständiges Markdown-Dokument mit Anwaltskosten-Tabelle,
+  USt-Zeile, Gerichtsgebühren-Tabelle und Gesamtsumme.
+- `examples/klage_15000.json` als Beispiel-Eingabe (Klage bei Streitwert 15 000
+  EUR mit zwei Klägern; Total 2.424,15 EUR inkl. USt und GGG).
+- Console-Script-Eintrag `gkn = "gerichtskostennote.cli:main"` in
+  `pyproject.toml`; zusätzlich `python -m gerichtskostennote ...`.
+- 16 zusätzliche Tests in `tests/test_renderer.py` (compute-Funktion, Markdown-
+  Inhalt, CLI stdout/Datei/stdin, console_script-Smoke-Test).
 - RATG-Modul `gerichtskostennote.ratg` mit `tarifsatz()`, `einheitssatz()` und
   `streitgenossenzuschlag()`. Cent-Präzision (Decimal, HALF_UP). Implementiert
   RATG Anl. 1 TP 1, TP 2, TP 3 Teil A inklusive der inkrementellen Stufe

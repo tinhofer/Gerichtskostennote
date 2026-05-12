@@ -1,0 +1,31 @@
+{
+  "title": "Kostennote",
+  "header": {
+    "aktenzeichen": "1 Cg 123/26x",
+    "gericht": "Bezirksgericht Innere Stadt Wien",
+    "klaeger": ["Hans Mustermann", "Maria Mustermann"],
+    "beklagter": ["XYZ GmbH"],
+    "stand": "2026-05-12"
+  },
+  "streitwert": 15000,
+  "umsatzsteuer_prozent": 20,
+  "default_personen_einer_seite": 2,
+  "anwaltsleistungen": [
+    {
+      "datum": "2026-03-15",
+      "tp": "3a",
+      "beschreibung": "Klage"
+    },
+    {
+      "datum": "2026-04-20",
+      "tp": "2",
+      "beschreibung": "Vorbereitender Schriftsatz"
+    }
+  ],
+  "gerichtsgebuehren": [
+    {
+      "tp": "1",
+      "beschreibung": "Pauschalgebühr Klage 1. Instanz"
+    }
+  ]
+}
