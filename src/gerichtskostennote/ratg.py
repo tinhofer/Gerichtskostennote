@@ -31,6 +31,8 @@ class Tarifpost(str, Enum):
     TP1 = "1"
     TP2 = "2"
     TP3A = "3a"
+    TP3B = "3b"
+    TP3C = "3c"
 
 
 @dataclass(frozen=True)
@@ -83,6 +85,8 @@ def _load() -> None:
         (Tarifpost.TP1, "tp1.json"),
         (Tarifpost.TP2, "tp2.json"),
         (Tarifpost.TP3A, "tp3a.json"),
+        (Tarifpost.TP3B, "tp3b.json"),
+        (Tarifpost.TP3C, "tp3c.json"),
     ):
         raw = json.loads((_DATA_DIR / filename).read_text())
         _CACHE[tp] = _TPSpec(

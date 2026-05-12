@@ -11,6 +11,8 @@ Erste Tranche, beschränkt auf die für eine typische Zivilprozess-Kostennote we
 | `tp1.json` | RATG Anl. 1 TP 1 | Schriftsätze einfacher Art |
 | `tp2.json` | RATG Anl. 1 TP 2 | Kurze Schriftsätze und Tagsatzungen |
 | `tp3a.json` | RATG Anl. 1 TP 3 Teil A | Klagen, Klagebeantwortungen, Tagsatzungen 1. Instanz |
+| `tp3b.json` | RATG Anl. 1 TP 3 Teil B | Berufungen, Rekurse, Beschwerden (2. Instanz) |
+| `tp3c.json` | RATG Anl. 1 TP 3 Teil C | Revisionen, Revisionsrekurse, OGH-Schriftsätze (3. Instanz) |
 | `einheitssatz.json` | § 23 RATG | Pauschalanteil für Nebenleistungen (60 % bzw. 50 %) |
 | `streitgenossenzuschlag.json` | § 15 RATG | Zuschlag bei mehreren Personen (10 % + 5 % je weitere, max. 50 %) |
 | `index.json` | — | Metadaten + gemeinsame Bracket-Stützstellen + offene Punkte |
@@ -32,9 +34,9 @@ Wie bei den GGG-Daten: jede Stelle führt `betrag_gesetz` (RATG-Wortlaut) und `b
 
 ## Noch offen
 
-- TP 3 Teil B (Berufungen, Rekurse, Beschwerden) und Teil C (Revisionen, OGH)
 - TP 3A (Exekutionsverfahren)
-- TP 4–9
+- TP 4 (Strafverfahren), TP 5 (Reisekosten), TP 6 (Schreibgebühren)
+- TP 7 (außergerichtliche Leistungen), TP 8 (Stundensätze), TP 9 (Verfahrenshilfe)
 - § 23 Abs. 5–10 RATG (Verdoppelung/Verdreifachung/Vervierfachung des Einheitssatzes in Spezialfällen)
 - § 23a RATG (ERV-Erhöhung)
 

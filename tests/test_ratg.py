@@ -253,6 +253,107 @@ def test_streitgenossen_rejects_negative_counts() -> None:
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# TP 3 Teil B — Berufungen, Rekurse, Beschwerden
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "basis,expected",
+    [
+        (40, "43.70"),         # bracket 1
+        (3_000, "216.90"),     # über 1 820 bis 3 630 → Anm. 9
+        (10_170, "433.20"),    # Top bracket
+    ],
+)
+def test_tp3b_brackets(basis: int, expected: str) -> None:
+    assert tarifsatz("3b", basis) == Decimal(expected)
+
+
+def test_tp3b_incremental_at_15000() -> None:
+    # ceil((15 000 - 10 170) / 1 450) = 4 Schritte á 43.70
+    # 433.20 + 4 * 43.70 = 433.20 + 174.80 = 608.00
+    assert tarifsatz("3b", 15_000) == Decimal("608.00")
+
+
+def test_tp3b_extra_step_at_36340() -> None:
+    # Genau am Übergangspunkt: 433.20 + 18 * 43.70 = 1 219.80
+    assert tarifsatz("3b", 36_340) == Decimal("1219.80")
+
+
+def test_tp3b_promille_first_slice() -> None:
+    # 50 000 → 1 219.80 + (50 000 - 36 340) * 1.25 / 1 000
+    # = 1 219.80 + 13 660 * 0.00125 = 1 219.80 + 17.075 → 1 236.88
+    assert tarifsatz("3b", 50_000) == Decimal("1236.88")
+
+
+def test_tp3b_cap_at_very_high_basis() -> None:
+    assert tarifsatz("3b", 100_000_000) == Decimal("25963.20")
+
+
+# ---------------------------------------------------------------------------
+# TP 3 Teil C — Revisionen, OGH-Schriftsätze
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "basis,expected",
+    [
+        (40, "52.50"),
+        (3_000, "260.20"),
+        (10_170, "519.60"),
+    ],
+)
+def test_tp3c_brackets(basis: int, expected: str) -> None:
+    assert tarifsatz("3c", basis) == Decimal(expected)
+
+
+def test_tp3c_incremental_at_15000() -> None:
+    # 519.60 + 4 * 52.50 = 519.60 + 210.00 = 729.60
+    assert tarifsatz("3c", 15_000) == Decimal("729.60")
+
+
+def test_tp3c_extra_step_at_36340() -> None:
+    # 519.60 + 18 * 52.50 = 519.60 + 945.00 = 1 464.60
+    assert tarifsatz("3c", 36_340) == Decimal("1464.60")
+
+
+def test_tp3c_promille_first_slice() -> None:
+    # 100 000 → 1 464.60 + (100 000 - 36 340) * 1.5 / 1 000
+    # = 1 464.60 + 63 660 * 0.0015 = 1 464.60 + 95.49 = 1 560.09
+    assert tarifsatz("3c", 100_000) == Decimal("1560.09")
+
+
+def test_tp3c_promille_second_slice() -> None:
+    # 1 000 000 → 1 464.60 + slice1 + slice2
+    # slice1 = (363 360 - 36 340) * 1.5 / 1 000 = 327 020 * 0.0015 = 490.53
+    # slice2 = (1 000 000 - 363 360) * 0.75 / 1 000 = 636 640 * 0.00075 = 477.48
+    # Total = 1 464.60 + 490.53 + 477.48 = 2 432.61
+    assert tarifsatz("3c", 1_000_000) == Decimal("2432.61")
+
+
+def test_tp3c_cap_at_very_high_basis() -> None:
+    assert tarifsatz("3c", 100_000_000) == Decimal("31155.80")
+
+
+# ---------------------------------------------------------------------------
+# Integration smoke test — Berufung-Kostenposition
+# ---------------------------------------------------------------------------
+
+
+def test_kostenposition_berufung_50000_streitwert() -> None:
+    """Klassische Berufungs-Kostenposition: TP 3B, Berufungsinteresse 50 000 EUR,
+    Berufungswerber tritt allein auf."""
+    bw = Decimal("50000")
+
+    verdienst = tarifsatz("3b", bw)        # 1236.88
+    es = einheitssatz(bw, verdienst)       # 50 % → 618.44
+
+    assert verdienst == Decimal("1236.88")
+    assert es == Decimal("618.44")
+    assert verdienst + es == Decimal("1855.32")
+
+
 def test_kostenposition_klage_15000_streitwert() -> None:
     """Typische Kostenposition: Klage nach TP 3A, Streitwert 15 000 EUR,
     Kläger vertritt zwei Personen gegen einen Beklagten."""

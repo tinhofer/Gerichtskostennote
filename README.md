@@ -27,7 +27,7 @@ Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](dat
 pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
 pip install -e ".[pdf]"       # + PDF-Renderer (reportlab)
 pip install -e ".[test]"      # + pytest, pypdf, reportlab
-python -m pytest              # 104 Tests (GGG + RATG + Renderer/CLI + PDF)
+python -m pytest              # 120 Tests (GGG + RATG + Renderer/CLI + PDF)
 ```
 
 ### CLI: vollständige Kostennote aus JSON
@@ -94,7 +94,9 @@ sg        = streitgenossenzuschlag(verdienst + es, anzahl_personen_einer_seite=2
 ```
 
 GGG-Tarifpost-Keys: `"1"`, `"2"`, `"3a"`, `"3b"`, `"4Ia"`, `"4Ib"`, `"4IIa"`, `"4IIb"`, `"4IIIa"`, `"4IIIb"`.
-RATG-Tarifpost-Keys: `"1"`, `"2"`, `"3a"` (TP 3 Teil A).
+RATG-Tarifpost-Keys: `"1"`, `"2"`, `"3a"` (TP 3 Teil A — Klage/1. Instanz), `"3b"` (TP 3 Teil B — Berufung/Rekurs), `"3c"` (TP 3 Teil C — Revision/OGH).
+
+Beispiel-Eingaben: [`klage_15000.json`](examples/klage_15000.json) (Klage 1. Instanz), [`berufung_50000.json`](examples/berufung_50000.json) (Berufung).
 
 Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data/`). Editable-Install (`pip install -e .`) ist daher derzeit empfohlen.
 
@@ -105,7 +107,8 @@ Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data
 - [x] RATG TP 1, 2, 3 Teil A + § 23 Einheitssatz + § 15 Streitgenossenzuschlag
 - [x] CLI `gkn` + Markdown-Renderer (Eingabe Streitwert/Leistungen → vollständige Kostennote)
 - [x] PDF-Renderer (ReportLab Platypus, A4-Layout)
-- [ ] RATG TP 3 Teil B/C (Berufung/Revision), TP 3A (Exekutionsverfahren), TP 4–9
+- [x] RATG TP 3 Teil B (Berufung/Rekurs) + Teil C (Revision/OGH)
+- [ ] RATG TP 3A (Exekutionsverfahren), TP 4–9
 - [ ] § 23 Abs. 5–10 RATG (Verdoppelung/Verdreifachung des Einheitssatzes in Spezialfällen), § 23a (ERV)
 - [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)
 - [ ] GGG TP 9–15 (Eintragungs- und Justizverwaltungsgebühren)

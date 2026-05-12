@@ -42,11 +42,19 @@
       "id": "tp3a",
       "file": "tp3a.json",
       "scope": "TP 3 Teil A — Klagen, Klagebeantwortungen, weitere Schriftsätze 1. Instanz; Tagsatzungen"
+    },
+    {
+      "id": "tp3b",
+      "file": "tp3b.json",
+      "scope": "TP 3 Teil B — Berufungen, Berufungsbeantwortungen, Rekurse, Rekursbeantwortungen, Beschwerden"
+    },
+    {
+      "id": "tp3c",
+      "file": "tp3c.json",
+      "scope": "TP 3 Teil C — Revisionen, Revisionsrekurse, Rekurse an den OGH"
     }
   ],
   "open_items": [
-    "TP 3 Teil B (Berufungen, Rekurse, Beschwerden)",
-    "TP 3 Teil C (Revisionen, Revisionsrekurse, OGH-Schriftsätze)",
     "TP 3A (Exekutionsverfahren)",
     "TP 4 (Strafverfahren), TP 5 (Reisekosten), TP 6 (Schreibgebühren)",
     "TP 7 (außergerichtliche Leistungen), TP 8 (Stundensätze), TP 9 (Verfahrenshilfe)",

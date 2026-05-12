@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- RATG-Tarifdaten für **TP 3 Teil B** (Berufungen, Berufungsbeantwortungen,
+  Rekurse, Rekursbeantwortungen, Beschwerden) und **TP 3 Teil C** (Revisionen,
+  Revisionsrekurse, Rekurse an den OGH) als `data/ratg/tp3b.json` und
+  `data/ratg/tp3c.json`. Werte nach BGBl. II Nr. 131/2023 (ab 1.5.2023).
+- `ratg.Tarifpost` erweitert um `TP3B = "3b"` und `TP3C = "3c"`; die
+  bestehenden API-Funktionen (`tarifsatz`, `einheitssatz`,
+  `streitgenossenzuschlag`) funktionieren ohne weitere Änderungen mit den
+  neuen Keys.
+- Beispiel-Eingabe `examples/berufung_50000.json` (Berufung,
+  Berufungsinteresse 50.000 EUR → Gesamt 5.041,38 EUR inkl. GGG TP 2 und USt).
+- 16 zusätzliche Tests in `tests/test_ratg.py`: Bracket-Lookups,
+  inkrementelle Stufe, Promille-Stufen (1,25 ‰ / 0,625 ‰ für TP 3B; 1,5 ‰ /
+  0,75 ‰ für TP 3C), Cap-Verhalten und ein Berufungs-Integrations-Smoke-Test.
 - PDF-Renderer in `gerichtskostennote.pdf.render_pdf()` (ReportLab Platypus,
   A4-Layout mit Header-Block, Streitwert, Anwaltskosten-Tabelle, USt-Zeilen,
   Gerichtsgebühren-Tabelle, Gesamtsumme). Optional-Extra `pdf` zieht
