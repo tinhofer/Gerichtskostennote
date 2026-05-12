@@ -25,17 +25,22 @@ Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](dat
 
 ```bash
 pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
-pip install -e ".[test]"      # mit pytest
-python -m pytest              # 94 Tests (GGG TP 1–4 + RATG TP 1/2/3A + Renderer/CLI)
+pip install -e ".[pdf]"       # + PDF-Renderer (reportlab)
+pip install -e ".[test]"      # + pytest, pypdf, reportlab
+python -m pytest              # 104 Tests (GGG + RATG + Renderer/CLI + PDF)
 ```
 
 ### CLI: vollständige Kostennote aus JSON
 
 ```bash
-gkn examples/klage_15000.json                  # nach stdout
-gkn examples/klage_15000.json -o kosten.md     # in Datei
-python -m gerichtskostennote -                  # liest JSON von stdin
+gkn examples/klage_15000.json                  # Markdown nach stdout
+gkn examples/klage_15000.json -o kosten.md     # Markdown in Datei
+gkn examples/klage_15000.json -o kosten.pdf    # PDF in Datei
+gkn examples/klage_15000.json -f pdf -o k.bin  # Format explizit erzwingen
+python -m gerichtskostennote -                  # JSON von stdin (immer Markdown)
 ```
+
+Das Format wird per Dateiendung erraten (`.pdf` → PDF, sonst Markdown) oder mit `-f/--format` explizit gewählt. Für PDF-Ausgabe ist das Extra `pdf` (ReportLab) erforderlich.
 
 Eingabe-Schema (siehe [`examples/klage_15000.json`](examples/klage_15000.json)):
 
@@ -99,11 +104,11 @@ Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data
 - [x] Python-Modul `gerichtskostennote` mit Tests gegen Worked Examples aus dem GGG
 - [x] RATG TP 1, 2, 3 Teil A + § 23 Einheitssatz + § 15 Streitgenossenzuschlag
 - [x] CLI `gkn` + Markdown-Renderer (Eingabe Streitwert/Leistungen → vollständige Kostennote)
+- [x] PDF-Renderer (ReportLab Platypus, A4-Layout)
 - [ ] RATG TP 3 Teil B/C (Berufung/Revision), TP 3A (Exekutionsverfahren), TP 4–9
 - [ ] § 23 Abs. 5–10 RATG (Verdoppelung/Verdreifachung des Einheitssatzes in Spezialfällen), § 23a (ERV)
 - [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)
 - [ ] GGG TP 9–15 (Eintragungs- und Justizverwaltungsgebühren)
-- [ ] PDF-Renderer (z. B. via Pandoc / WeasyPrint)
 
 ## Quellen
 

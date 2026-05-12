@@ -20,7 +20,8 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest>=8"]
+pdf = ["reportlab>=4"]
+test = ["pytest>=8", "reportlab>=4", "pypdf>=4"]
 
 [project.scripts]
 gkn = "gerichtskostennote.cli:main"

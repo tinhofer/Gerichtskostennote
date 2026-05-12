@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- PDF-Renderer in `gerichtskostennote.pdf.render_pdf()` (ReportLab Platypus,
+  A4-Layout mit Header-Block, Streitwert, Anwaltskosten-Tabelle, USt-Zeilen,
+  Gerichtsgebühren-Tabelle, Gesamtsumme). Optional-Extra `pdf` zieht
+  ReportLab.
+- CLI dispatched auf PDF, wenn die Ausgabedatei `.pdf` endet — oder
+  explizit per `-f pdf`. Markdown bleibt Default. PDF-Ausgabe auf stdout
+  wird abgelehnt (Exit 2, Stderr-Hinweis).
+- 10 zusätzliche Tests in `tests/test_pdf.py` (PDF-Header-Bytes, Inhalt via
+  pypdf-Textextraktion, Format-Auflösung, CLI-PDF-Pfad, Fehlerpfad ohne `-o`).
+- Test-Extra erweitert um `reportlab` und `pypdf`.
 - CLI `gkn` (Konsolen-Skript `gerichtskostennote.cli:main`) und Markdown-
   Renderer (`gerichtskostennote.renderer`). Liest eine JSON-Beschreibung einer
   Kostennote (Streitwert, Anwaltsleistungen, Gerichtsgebühren, Header) und
