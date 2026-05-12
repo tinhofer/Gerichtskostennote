@@ -354,6 +354,68 @@ def test_kostenposition_berufung_50000_streitwert() -> None:
     assert verdienst + es == Decimal("1855.32")
 
 
+# ---------------------------------------------------------------------------
+# tagsatzung_verdienst — TP 3 Abschnitt II Tagsatzungen mit Stundenfaktor
+# ---------------------------------------------------------------------------
+
+
+from gerichtskostennote.ratg import tagsatzung_verdienst
+
+
+def test_tagsatzung_one_hour_equals_tarifsatz() -> None:
+    # 1 Stunde → genau Abschnitt-I-Wert
+    assert tagsatzung_verdienst("3a", 25411.12, 1) == tarifsatz("3a", 25411.12)
+
+
+def test_tagsatzung_default_dauer_is_one() -> None:
+    assert tagsatzung_verdienst("3a", 25411.12) == tarifsatz("3a", 25411.12)
+
+
+def test_tagsatzung_two_hours_one_and_a_half() -> None:
+    # TP 3A bei 25 411,12 EUR → 732,70; 2 Stunden = 1 × voll + 1 × halb = 1,5 ×
+    # 732,70 + 366,35 = 1 099,05
+    assert tagsatzung_verdienst("3a", 25411.12, 2) == Decimal("1099.05")
+
+
+def test_tagsatzung_three_hours() -> None:
+    # 1 × voll + 2 × halb = 732,70 + 732,70 = 1 465,40
+    assert tagsatzung_verdienst("3a", 25411.12, 3) == Decimal("1465.40")
+
+
+def test_tagsatzung_four_hours() -> None:
+    # 1 × voll + 3 × halb = 732,70 + 1 099,05 = 1 831,75
+    assert tagsatzung_verdienst("3a", 25411.12, 4) == Decimal("1831.75")
+
+
+def test_tagsatzung_fractional_hours_rounds_up() -> None:
+    # 1,5 Stunden → 2 angefangene Stunden = 1 × voll + 1 × halb
+    assert tagsatzung_verdienst("3a", 25411.12, Decimal("1.5")) == Decimal("1099.05")
+    assert tagsatzung_verdienst("3a", 25411.12, Decimal("1.01")) == Decimal("1099.05")
+
+
+def test_tagsatzung_below_one_hour_treated_as_one() -> None:
+    assert tagsatzung_verdienst("3a", 25411.12, Decimal("0.5")) == Decimal("732.70")
+
+
+def test_tagsatzung_zero_or_negative_rejected() -> None:
+    with pytest.raises(ValueError):
+        tagsatzung_verdienst("3a", 25411.12, 0)
+    with pytest.raises(ValueError):
+        tagsatzung_verdienst("3a", 25411.12, -1)
+
+
+def test_tagsatzung_works_with_tp3b_and_tp3c() -> None:
+    # Sanity — die Logik delegiert an tarifsatz(), funktioniert mit allen TPs.
+    tp3b_einf = tarifsatz("3b", 50000)
+    tp3b_zwei = tagsatzung_verdienst("3b", 50000, 2)
+    assert tp3b_zwei == _q_local(tp3b_einf + tp3b_einf / Decimal(2))
+
+
+def _q_local(amount: Decimal) -> Decimal:
+    from decimal import ROUND_HALF_UP
+    return amount.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
 def test_kostenposition_klage_15000_streitwert() -> None:
     """Typische Kostenposition: Klage nach TP 3A, Streitwert 15 000 EUR,
     Kläger vertritt zwei Personen gegen einen Beklagten."""

@@ -16,6 +16,7 @@ from gerichtskostennote.ratg import (
     einheitssatz,
     erv_erhoehung,
     streitgenossenzuschlag,
+    tagsatzung_verdienst,
     tarifsatz,
 )
 
@@ -129,7 +130,11 @@ def compute(payload: dict[str, Any]) -> Kostennote:
         n_andere = int(raw.get("weitere_personen_andere_seite", 0))
         ermaess_multiplier = Decimal(str(raw.get("einheitssatz_multiplier", 1)))
 
-        verdienst = tarifsatz(tp, streitwert)
+        dauer_raw = raw.get("dauer_stunden")
+        if dauer_raw is not None:
+            verdienst = tagsatzung_verdienst(tp, streitwert, dauer_raw)
+        else:
+            verdienst = tarifsatz(tp, streitwert)
         es = einheitssatz(streitwert, verdienst, multiplier=ermaess_multiplier)
         sg = streitgenossenzuschlag(verdienst + es, n_personen, n_andere)
 

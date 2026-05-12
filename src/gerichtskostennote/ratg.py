@@ -21,6 +21,7 @@ __all__ = [
     "Tarifpost",
     "ErvKind",
     "tarifsatz",
+    "tagsatzung_verdienst",
     "einheitssatz",
     "streitgenossenzuschlag",
     "erv_erhoehung",
@@ -268,6 +269,43 @@ def streitgenossenzuschlag(
     prozent = Decimal(10) + Decimal(5) * weitere
     prozent = min(prozent, Decimal(50))
     return _to_cents(grundlage_d * prozent / Decimal(100))
+
+
+def tagsatzung_verdienst(
+    tp: str | Tarifpost,
+    basis: float | int | Decimal,
+    dauer_stunden: int | float | Decimal = 1,
+    *,
+    valorized: bool = True,
+) -> Decimal:
+    """Verdienst für eine Tagsatzung nach TP 3A/3B/3C Abschnitt II RATG.
+
+    Regel (TP 3 Abschnitt II): „für die erste Stunde jeder Tagsatzung die im
+    Abschnitt I festgesetzte Entlohnung, für jede weitere, wenn auch nur
+    begonnene Stunde einer Tagsatzung die Hälfte dieser Entlohnung".
+
+    :param tp: Tarifpost (``"3a"``, ``"3b"`` oder ``"3c"``).
+    :param basis: Bemessungsgrundlage.
+    :param dauer_stunden: Dauer der Tagsatzung in Stunden. Wird auf die
+        nächste ganze Stunde aufgerundet ("auch nur begonnene Stunde"). ≤ 1
+        bedeutet 1 Stunde (= einfacher Abschnitt-I-Wert).
+    :returns: Verdienst in Euro mit Cent-Präzision.
+
+    Hinweis: Anm. 14-Caps für die zweite/weitere Stunde sind aktuell noch
+    nicht implementiert — relevant erst bei sehr hohen Streitwerten.
+    """
+
+    erste_stunde = tarifsatz(tp, basis, valorized=valorized)
+    # Aufrunden auf "auch nur begonnene Stunde".
+    dauer_d = _D(dauer_stunden)
+    if dauer_d <= 0:
+        raise ValueError("dauer_stunden muss positiv sein")
+    stunden_ceil = dauer_d.quantize(Decimal("1"), rounding=ROUND_CEILING)
+    if stunden_ceil <= 1:
+        return _to_cents(erste_stunde)
+    weitere = int(stunden_ceil - 1)
+    halbe = _to_cents(erste_stunde / Decimal(2))
+    return _to_cents(erste_stunde + halbe * Decimal(weitere))
 
 
 _ERV_CACHE: dict[ErvKind, tuple[Decimal, Decimal]] = {}

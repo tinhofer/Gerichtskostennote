@@ -394,6 +394,53 @@ def test_auto_fahrtkosten_and_explicit_barauslagen_combine() -> None:
     assert note.barauslagen_summe == Decimal("6.30")
 
 
+def test_compute_dauer_stunden_doubles_for_two_hour_verhandlung() -> None:
+    """Per-leistung 'dauer_stunden' multipliziert den Verdienst-Anteil."""
+    one_hour = compute(
+        {
+            "streitwert": 25411.12,
+            "anwaltsleistungen": [{"tp": "3a", "beschreibung": "Verhandlung"}],
+        }
+    )
+    two_hour = compute(
+        {
+            "streitwert": 25411.12,
+            "anwaltsleistungen": [
+                {"tp": "3a", "beschreibung": "Verhandlung", "dauer_stunden": 2}
+            ],
+        }
+    )
+    # 1 Stunde: 732,70 Verdienst, ES 50% = 366,35
+    # 2 Stunden: 1.099,05 Verdienst, ES 50% = 549,53 (HALF_UP)
+    assert one_hour.leistungen[0].verdienst == Decimal("732.70")
+    assert two_hour.leistungen[0].verdienst == Decimal("1099.05")
+    assert two_hour.leistungen[0].einheitssatz == Decimal("549.53")
+
+
+def test_compute_dauer_stunden_combined_with_einheitssatz_multiplier() -> None:
+    """4-Stunden auswärtige Verhandlung: dauer_stunden=4 + multiplier=2."""
+    note = compute(
+        {
+            "streitwert": 25411.12,
+            "anwaltsleistungen": [
+                {
+                    "tp": "3a",
+                    "beschreibung": "Streitverhandlung Wiener Neustadt",
+                    "dauer_stunden": 4,
+                    "einheitssatz_multiplier": 2,
+                }
+            ],
+        }
+    )
+    row = note.leistungen[0]
+    # Verdienst 4 Stunden: 732,70 + 3 × 366,35 = 1.831,75
+    # ES 50% × 2 = 100%: 1.831,75
+    # Netto: 3.663,50
+    assert row.verdienst == Decimal("1831.75")
+    assert row.einheitssatz == Decimal("1831.75")
+    assert row.netto == Decimal("3663.50")
+
+
 def test_render_markdown_shows_erv_summary() -> None:
     note = compute(
         {

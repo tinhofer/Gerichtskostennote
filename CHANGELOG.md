@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Tagsatzungs-Stundenfaktor** für TP 3 Abschnitt II: Pro Anwaltsleistung kann
+  `dauer_stunden` (z. B. 2, 3, 4) angegeben werden. Erste Stunde voller
+  Tarifsatz, jede weitere angefangene Stunde die Hälfte (TP 3 Abschnitt II
+  RATG). Bruchstunden werden auf die nächste ganze Stunde aufgerundet
+  („auch nur begonnene Stunde"). Neue API-Funktion
+  `ratg.tagsatzung_verdienst(tp, basis, dauer_stunden=1)`. 11 neue Tests.
+- **`CLAUDE.md`** mit Orientierung für künftige Agent-Sessions (Repo-Layout,
+  Schema, Konventionen, offene Punkte, Workflow).
 - **Fahrtkosten-Shortcut** im Kostennote-Schema: Top-level
   `default_fahrtkosten` definiert den Standardbetrag (z. B. EUR 4,80 pro
   Gerichtsbehandlung). Pro Anwaltsleistung kann `fahrtkosten: true` (=

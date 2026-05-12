@@ -27,7 +27,7 @@ Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](dat
 pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
 pip install -e ".[pdf]"       # + PDF-Renderer (reportlab)
 pip install -e ".[test]"      # + pytest, pypdf, reportlab
-python -m pytest              # 140 Tests (GGG + RATG + Renderer/CLI + PDF + ERV + Barauslagen + Fahrtkosten)
+python -m pytest              # 151 Tests (GGG + RATG + Renderer/CLI + PDF + ERV + Barauslagen + Fahrtkosten + dauer_stunden)
 ```
 
 ### CLI: vollständige Kostennote aus JSON
@@ -79,6 +79,8 @@ Top-level `barauslagen` (optional): Liste von Auslagen ohne USt (Reisekosten, Fa
 - `true` → Default-Fahrtkosten als Barauslage zur Leistung angelegt;
 - Zahl → eigener Betrag, ignoriert Default;
 - `false` oder fehlend → keine Fahrtkosten (z. B. auswärtige Verhandlungen mit `einheitssatz_multiplier: 2` nach § 23 Abs. 5 RATG).
+
+**Tagsatzungsdauer:** Pro TP 3 Abschnitt II Leistung kann `dauer_stunden` (1, 2, 3, 4 …) gesetzt werden. Erste Stunde voller Tarifsatz, jede weitere (auch nur begonnene) Stunde halber Tarifsatz nach RATG. Bruchstunden werden auf die nächste ganze Stunde aufgerundet.
 
 ### Bibliotheks-API
 
