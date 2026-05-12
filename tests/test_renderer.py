@@ -180,6 +180,94 @@ def test_compute_unknown_erv_kind_rejected() -> None:
         compute(payload)
 
 
+# ---------------------------------------------------------------------------
+# Barauslagen (Reisekosten / Fahrtkosten etc., ohne USt)
+# ---------------------------------------------------------------------------
+
+
+def test_compute_barauslagen_sum_excluded_from_ust() -> None:
+    payload = {
+        "streitwert": 5000,
+        "anwaltsleistungen": [
+            {"tp": "3a", "beschreibung": "Klage"},
+        ],
+        "barauslagen": [
+            {"datum": "2026-01-09", "beschreibung": "Fahrtkosten", "betrag": 4.80},
+        ],
+    }
+    note = compute(payload)
+    # Anwalt netto = 208.20 + 124.92 = 333.12; ust = 66.62; brutto = 399.74
+    assert note.anwalt_netto == Decimal("333.12")
+    assert note.umsatzsteuer == Decimal("66.62")
+    assert note.anwalt_brutto == Decimal("399.74")
+    # Barauslagen flow in summe but NOT through USt:
+    assert note.barauslagen_summe == Decimal("4.80")
+    assert note.gesamt == Decimal("404.54")
+
+
+def test_compute_multiple_barauslagen() -> None:
+    payload = {
+        "streitwert": 1000,
+        "anwaltsleistungen": [],
+        "barauslagen": [
+            {"beschreibung": "Fahrtkosten Termin 1", "betrag": 4.80},
+            {"beschreibung": "Fahrtkosten Termin 2", "betrag": 4.80},
+            {"beschreibung": "Porto", "betrag": 1.50},
+        ],
+    }
+    note = compute(payload)
+    assert note.barauslagen_summe == Decimal("11.10")
+    assert note.gesamt == Decimal("11.10")
+
+
+def test_compute_barauslage_missing_betrag_rejected() -> None:
+    with pytest.raises(InputError):
+        compute(
+            {
+                "streitwert": 1000,
+                "barauslagen": [{"beschreibung": "X"}],
+            }
+        )
+
+
+def test_compute_barauslage_negative_rejected() -> None:
+    with pytest.raises(InputError):
+        compute(
+            {
+                "streitwert": 1000,
+                "barauslagen": [{"beschreibung": "X", "betrag": -1}],
+            }
+        )
+
+
+def test_render_markdown_shows_barauslagen_section() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "anwaltsleistungen": [{"tp": "3a", "beschreibung": "X"}],
+            "barauslagen": [
+                {"datum": "2026-01-09", "beschreibung": "Fahrtkosten", "betrag": 4.80}
+            ],
+        }
+    )
+    md = render_markdown(note)
+    assert "## Barauslagen" in md
+    assert "Fahrtkosten" in md
+    assert "4,80" in md
+    assert "ohne USt" in md
+
+
+def test_render_markdown_omits_barauslagen_section_when_empty() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "anwaltsleistungen": [{"tp": "3a", "beschreibung": "X"}],
+        }
+    )
+    md = render_markdown(note)
+    assert "## Barauslagen" not in md
+
+
 def test_render_markdown_shows_erv_summary() -> None:
     note = compute(
         {

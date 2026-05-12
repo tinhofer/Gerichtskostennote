@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Barauslagen-Sektion** im Kostennote-Schema und Renderer (Markdown + PDF).
+  Eingabe als Liste `barauslagen` mit `betrag` (Pflicht), `beschreibung` und
+  `datum` (optional). Werden ohne USt in die Gesamtsumme aufgenommen und
+  separat ausgewiesen — passt für Reisekosten/Fahrtkosten, Porto, etc.
+- 6 neue Tests in `tests/test_renderer.py` (Barauslagen außerhalb der
+  USt-Basis, Mehrfacheinträge, Pflichtfeld- und Negativ-Validierung,
+  Markdown-Sektion, Sektion-Auslassung bei leerer Liste).
 - **§ 23a RATG (Web-ERV)** als richtiges Feature: pro Anwaltsleistung kann
   jetzt `"erv": "einleitend"` (5,00 EUR valorisiert), `"weiterer"`
   (2,60 EUR; Alias `true`) oder `"grundbuch_firmenbuch"` (9,50 EUR) gesetzt

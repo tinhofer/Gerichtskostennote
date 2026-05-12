@@ -47,6 +47,15 @@ class _GerichtsRow:
 
 
 @dataclass(frozen=True)
+class _BarauslageRow:
+    """Barauslage / Reisekosten / Sonstige Auslagen, ohne USt-Behandlung."""
+
+    datum: str | None
+    beschreibung: str
+    betrag: Decimal
+
+
+@dataclass(frozen=True)
 class Kostennote:
     """Computed view of a cost note; carries Markdown serialization."""
 
@@ -55,11 +64,16 @@ class Kostennote:
     streitwert: Decimal
     umsatzsteuer_prozent: Decimal
     leistungen: list[_LeistungRow]
+    barauslagen: list[_BarauslageRow]
     gerichtsgebuehren: list[_GerichtsRow]
 
     @property
     def anwalt_netto(self) -> Decimal:
         return sum((row.netto for row in self.leistungen), Decimal("0.00"))
+
+    @property
+    def barauslagen_summe(self) -> Decimal:
+        return sum((row.betrag for row in self.barauslagen), Decimal("0.00"))
 
     @property
     def erv_summe(self) -> Decimal:
@@ -79,7 +93,7 @@ class Kostennote:
 
     @property
     def gesamt(self) -> Decimal:
-        return self.anwalt_brutto + self.gerichts_summe
+        return self.anwalt_brutto + self.barauslagen_summe + self.gerichts_summe
 
 
 def _q(amount: Decimal) -> Decimal:
@@ -139,6 +153,24 @@ def compute(payload: dict[str, Any]) -> Kostennote:
             )
         )
 
+    auslagen_rows: list[_BarauslageRow] = []
+    for raw in payload.get("barauslagen", []):
+        try:
+            betrag = Decimal(str(raw["betrag"]))
+        except KeyError as exc:
+            raise InputError(
+                "Barauslage benötigt Pflichtfeld 'betrag'"
+            ) from exc
+        if betrag < 0:
+            raise InputError("Barauslage 'betrag' darf nicht negativ sein")
+        auslagen_rows.append(
+            _BarauslageRow(
+                datum=raw.get("datum"),
+                beschreibung=raw.get("beschreibung", ""),
+                betrag=_q(betrag),
+            )
+        )
+
     gericht_rows: list[_GerichtsRow] = []
     for raw in payload.get("gerichtsgebuehren", []):
         tp = raw["tp"]
@@ -160,6 +192,7 @@ def compute(payload: dict[str, Any]) -> Kostennote:
         streitwert=streitwert,
         umsatzsteuer_prozent=ust,
         leistungen=rows,
+        barauslagen=auslagen_rows,
         gerichtsgebuehren=gericht_rows,
     )
 
@@ -211,6 +244,22 @@ def render_markdown(note: Kostennote) -> str:
             f"**USt ({note.umsatzsteuer_prozent:g} %):** {_fmt(note.umsatzsteuer)} EUR  "
         )
         lines.append(f"**Summe Anwaltskosten brutto:** {_fmt(note.anwalt_brutto)} EUR")
+        lines.append("")
+
+    if note.barauslagen:
+        lines.append("## Barauslagen")
+        lines.append("")
+        lines.append("| Datum | Beschreibung | Betrag |")
+        lines.append("|---|---|---:|")
+        for a in note.barauslagen:
+            lines.append(
+                f"| {a.datum or ''} | {a.beschreibung} | {_fmt(a.betrag)} |"
+            )
+        lines.append("")
+        lines.append(
+            f"**Summe Barauslagen** (ohne USt): "
+            f"{_fmt(note.barauslagen_summe)} EUR"
+        )
         lines.append("")
 
     if note.gerichtsgebuehren:

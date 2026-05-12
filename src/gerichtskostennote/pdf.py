@@ -217,6 +217,27 @@ def render_pdf(note: Kostennote, output: str | Path) -> Path:
             )
         )
 
+    if note.barauslagen:
+        flow.append(Paragraph("Barauslagen", styles["h2"]))
+        rows = [["Datum", "Beschreibung", "Betrag"]]
+        for a in note.barauslagen:
+            rows.append([a.datum or "", a.beschreibung, _fmt(a.betrag)])
+        flow.append(
+            _money_table(
+                rows,
+                col_widths=[22 * mm, 128 * mm, 20 * mm],
+                right_align_from_col=2,
+            )
+        )
+        flow.append(Spacer(1, 2 * mm))
+        flow.append(
+            Paragraph(
+                f"<b>Summe Barauslagen (ohne USt):</b> "
+                f"{_fmt(note.barauslagen_summe)} EUR",
+                styles["body_bold"],
+            )
+        )
+
     if note.gerichtsgebuehren:
         flow.append(Paragraph("Gerichtsgebühren", styles["h2"]))
         rows = [["TP", "Beschreibung", "Betrag"]]

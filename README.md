@@ -27,7 +27,7 @@ Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](dat
 pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
 pip install -e ".[pdf]"       # + PDF-Renderer (reportlab)
 pip install -e ".[test]"      # + pytest, pypdf, reportlab
-python -m pytest              # 127 Tests (GGG + RATG + Renderer/CLI + PDF + ERV)
+python -m pytest              # 133 Tests (GGG + RATG + Renderer/CLI + PDF + ERV + Barauslagen)
 ```
 
 ### CLI: vollständige Kostennote aus JSON
@@ -72,6 +72,8 @@ Optional je Anwaltsleistung:
 - `erv` — ERV-Erhöhung nach § 23a RATG. Werte: `"einleitend"` (5,00 EUR valorisiert), `"weiterer"` (2,60 EUR; Alias: `true`), `"grundbuch_firmenbuch"` (9,50 EUR). Der Erhöhungsbetrag fließt in den Netto-Betrag und damit in die USt-Basis, ist aber per § 23a RATG explizit aus ES- und SG-Basis ausgenommen.
 
 Je Gerichtsgebühr: `ermaessigung` (`rueckziehung_vor_zustellung`, `rueckziehung_erste_tagsatzung`, `einstweilige_verfuegung`, `rueckziehung_vor_bewilligung`) und `bemessungsgrundlage` (falls vom Streitwert abweichend).
+
+Top-level `barauslagen` (optional): Liste von Auslagen ohne USt (Reisekosten, Fahrtkosten, Porto etc.). Jeder Eintrag braucht `betrag`, optional `datum` und `beschreibung`. Fließt in die Gesamtsumme, aber nicht in die USt-Basis.
 
 ### Bibliotheks-API
 
