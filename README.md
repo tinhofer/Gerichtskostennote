@@ -1,91 +1,69 @@
-# Claude-Code
+# Gerichtskostennote
 
-A project scaffolded with best practices for modern development.
+Werkzeuge und strukturierte Daten zur Berechnung einer **Gerichtskostennote** nach österreichischem Recht — auf Basis des **Gerichtsgebührengesetzes (GGG)** für Gerichtsgebühren und des **Rechtsanwaltstarifgesetzes (RATG)** für Rechtsanwaltskosten.
 
-## Getting Started
+> Status: Frühphase. Aktuell sind die GGG-Tarifposten 1–4 (Zivilprozess erste/zweite/dritte Instanz, Exekutionsverfahren) als maschinenlesbares JSON erfasst. RATG-Tarifdaten und eine Berechnungsbibliothek folgen.
 
-### Prerequisites
+## Zielbild
 
-- Git
-- Your preferred programming language runtime
+1. **Tarifdaten als Single Source of Truth** — GGG- und RATG-Tarife in versionierten JSON-Dateien, mit Stand-Datum und Valorisierungs-Tracking.
+2. **Berechnungsbibliothek** (Python) — Pauschalgebühr nach Streitwert, Anwaltskosten nach Tarifpost/Leistung, Reduktionen (Anm. 3, 4 TP 1), Streitgenossenzuschlag, Einheitssatz.
+3. **Erstellung der Kostennote** — strukturierte Eingabe (Streitwert, Verfahrensart, Leistungen) → fertige Note (Markdown, später PDF).
 
-### Installation
+## Inhalt des Repos
 
-```bash
-git clone <repository-url>
-cd Claude-Code
+| Pfad | Inhalt |
+|---|---|
+| `data/ggg/` | GGG-Tarifposten als JSON (TP 1, 2, 3, 4 + Index + Schema-Doku) |
+| `20260414 Gerichtsgebührengesetz_gesamt.pdf` | RIS-Konsolidat GGG, Stand 14.04.2026 |
+| `20260414 Rechtsanwaltstarifgesetz _gesamt.pdf` | RIS-Konsolidat RATG, Stand 14.04.2026 |
+| `20260414 RIS - Rechtsanwaltstarifgesetz Anl. 1 - Bundesrecht konsolidiert.pdf` | RATG Anlage 1 (Tarif) |
+
+Siehe [`data/ggg/README.md`](data/ggg/README.md) für die Tarifdaten-Struktur.
+
+## Schnellbeispiel (manuell, ohne Bibliothek)
+
+Streitwert 25.000 EUR, Zivilprozess 1. Instanz, kein Rückzug, keine Sonderregel:
+
+→ Stufe TP 1: „über 7.000 Euro bis 35.000 Euro" → **974 EUR** (valorisiert ab 1.4.2025, BGBl. II Nr. 51/2025).
+
+```json
+{
+  "ueber": 7000,
+  "bis": 35000,
+  "betrag_gesetz": 792,
+  "betrag_ab_2025_04_01": 974,
+  "anmerkung": 7
+}
 ```
 
-## Project Structure
+## Roadmap
 
-```
-Claude-Code/
-├── .github/              # GitHub templates and workflows
-│   ├── ISSUE_TEMPLATE/   # Issue templates
-│   ├── workflows/        # CI/CD workflows
-│   └── PULL_REQUEST_TEMPLATE.md
-├── scripts/              # Utility scripts
-│   └── apply-best-practices.sh  # Apply scaffold to existing projects
-├── src/                  # Source code (create as needed)
-├── tests/                # Test files (create as needed)
-├── docs/                 # Documentation (create as needed)
-├── .editorconfig         # Editor configuration
-├── .gitignore            # Git ignore rules
-├── CHANGELOG.md          # Version history
-├── CONTRIBUTING.md       # Contribution guidelines
-├── LICENSE               # MIT License
-└── README.md             # This file
-```
+- [x] GGG TP 1–4 strukturiert erfassen
+- [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)
+- [ ] GGG TP 9–15 (Eintragungs- und Justizverwaltungsgebühren)
+- [ ] RATG Tarifposten + Einheitssatz + Streitgenossenzuschlag als JSON
+- [ ] Python-Modul `gerichtskostennote` mit Tests gegen Worked Examples aus dem GGG
+- [ ] CLI `gkn` (Eingabe Streitwert/Verfahren → Note)
+- [ ] Markdown- und PDF-Renderer
 
-## Usage
+## Quellen
 
-### For New Projects
+Die Tarifdaten sind aus den RIS-Konsolidaten (Bundeskanzleramt Österreich) extrahiert. URL-Muster für die Geltende Fassung:
 
-Fork or clone this repository and customize it for your needs:
+- GGG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002651>
+- RATG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002603>
 
-```bash
-git clone https://github.com/tinhofer/Claude-Code.git my-new-project
-cd my-new-project
-rm -rf .git && git init
-git add . && git commit -m "Add: initial project scaffold"
-```
+Die Valorisierung erfolgt durch Verordnung der Bundesministerin für Justiz nach § 31a GGG, zuletzt **BGBl. II Nr. 51/2025** (in Kraft 1.4.2025).
 
-### For Existing Projects
+## Mitwirken
 
-Use the included script to apply best practices to an existing project:
+Siehe [CONTRIBUTING.md](CONTRIBUTING.md). Korrekturen an Tarifwerten sind besonders willkommen — bitte mit Verweis auf RIS-Fundstelle.
 
-```bash
-# Preview what will be copied (dry run)
-./scripts/apply-best-practices.sh --dry-run /path/to/your-project
+## Lizenz
 
-# Apply the best practices
-./scripts/apply-best-practices.sh /path/to/your-project
-```
+MIT — siehe [LICENSE](LICENSE). Die im Repo abgelegten RIS-Konsolidate sind Bundesrecht und gemeinfrei (§ 7 UrhG).
 
-The script copies:
-- `.editorconfig` - Code style configuration
-- `.gitignore` - Comprehensive ignore patterns (as template if one exists)
-- `.github/ISSUE_TEMPLATE/` - Bug report and feature request templates
-- `.github/PULL_REQUEST_TEMPLATE.md` - PR checklist
-- `.github/CODEOWNERS` - Code ownership configuration
-- `.github/workflows/ci.yml` - CI/CD pipeline skeleton
-- `CONTRIBUTING.md` - Contribution guidelines
-- `CHANGELOG.md` - Version history template
+## Haftung
 
-After running the script, customize the files for your project's specific needs.
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for a list of changes.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Thanks to all contributors
+Dieses Projekt liefert Werkzeuge, kein Rechtsanwalt-Ersatz. Tarifwerte können sich durch Novellen oder Valorisierungsverordnungen jederzeit ändern. Vor Einreichung einer Kostennote eigene Prüfung erforderlich.
