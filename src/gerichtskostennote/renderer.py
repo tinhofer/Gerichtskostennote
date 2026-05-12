@@ -11,7 +11,13 @@ from decimal import ROUND_HALF_UP, Decimal
 from typing import Any
 
 from gerichtskostennote.ggg import Ermaessigung, pauschalgebuehr
-from gerichtskostennote.ratg import einheitssatz, streitgenossenzuschlag, tarifsatz
+from gerichtskostennote.ratg import (
+    ErvKind,
+    einheitssatz,
+    erv_erhoehung,
+    streitgenossenzuschlag,
+    tarifsatz,
+)
 
 _CENT = Decimal("0.01")
 
@@ -28,6 +34,8 @@ class _LeistungRow:
     verdienst: Decimal
     einheitssatz: Decimal
     streitgenossen: Decimal
+    erv: Decimal
+    erv_kind: str | None
     netto: Decimal
 
 
@@ -52,6 +60,10 @@ class Kostennote:
     @property
     def anwalt_netto(self) -> Decimal:
         return sum((row.netto for row in self.leistungen), Decimal("0.00"))
+
+    @property
+    def erv_summe(self) -> Decimal:
+        return sum((row.erv for row in self.leistungen), Decimal("0.00"))
 
     @property
     def umsatzsteuer(self) -> Decimal:
@@ -99,7 +111,20 @@ def compute(payload: dict[str, Any]) -> Kostennote:
         verdienst = tarifsatz(tp, streitwert)
         es = einheitssatz(streitwert, verdienst, multiplier=ermaess_multiplier)
         sg = streitgenossenzuschlag(verdienst + es, n_personen, n_andere)
-        netto = verdienst + es + sg
+
+        erv_raw = raw.get("erv")
+        erv_betrag = Decimal("0.00")
+        erv_kind: str | None = None
+        if erv_raw:
+            if erv_raw is True:
+                erv_kind = ErvKind.WEITERER.value
+            else:
+                # Accept short aliases.
+                alias = {"weiter": "weiterer", "gb_fb": "grundbuch_firmenbuch"}
+                erv_kind = alias.get(str(erv_raw), str(erv_raw))
+            erv_betrag = erv_erhoehung(erv_kind)
+
+        netto = verdienst + es + sg + erv_betrag
         rows.append(
             _LeistungRow(
                 datum=raw.get("datum"),
@@ -108,6 +133,8 @@ def compute(payload: dict[str, Any]) -> Kostennote:
                 verdienst=verdienst,
                 einheitssatz=es,
                 streitgenossen=sg,
+                erv=_q(erv_betrag),
+                erv_kind=erv_kind,
                 netto=_q(netto),
             )
         )
@@ -165,16 +192,20 @@ def render_markdown(note: Kostennote) -> str:
         lines.append("## Anwaltskosten")
         lines.append("")
         lines.append(
-            "| Datum | TP | Beschreibung | Verdienst | Einheitssatz | Streitgenossen | Netto |"
+            "| Datum | TP | Beschreibung | Verdienst | Einheitssatz | Streitgenossen | ERV | Netto |"
         )
-        lines.append("|---|---|---|---:|---:|---:|---:|")
+        lines.append("|---|---|---|---:|---:|---:|---:|---:|")
         for r in note.leistungen:
             lines.append(
                 f"| {r.datum or ''} | TP {r.tp.upper()} | {r.beschreibung} | "
                 f"{_fmt(r.verdienst)} | {_fmt(r.einheitssatz)} | "
-                f"{_fmt(r.streitgenossen)} | {_fmt(r.netto)} |"
+                f"{_fmt(r.streitgenossen)} | {_fmt(r.erv)} | {_fmt(r.netto)} |"
             )
         lines.append("")
+        if note.erv_summe > 0:
+            lines.append(
+                f"_Davon ERV-Erhöhung gemäß § 23a RATG: {_fmt(note.erv_summe)} EUR._  "
+            )
         lines.append(f"**Summe Anwaltskosten netto:** {_fmt(note.anwalt_netto)} EUR  ")
         lines.append(
             f"**USt ({note.umsatzsteuer_prozent:g} %):** {_fmt(note.umsatzsteuer)} EUR  "

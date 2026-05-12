@@ -160,6 +160,7 @@ def render_pdf(note: Kostennote, output: str | Path) -> Path:
                 "Verdienst",
                 "ES",
                 "SG",
+                "ERV",
                 "Netto",
             ]
         ]
@@ -172,6 +173,7 @@ def render_pdf(note: Kostennote, output: str | Path) -> Path:
                     _fmt(r.verdienst),
                     _fmt(r.einheitssatz),
                     _fmt(r.streitgenossen),
+                    _fmt(r.erv),
                     _fmt(r.netto),
                 ]
             )
@@ -180,12 +182,20 @@ def render_pdf(note: Kostennote, output: str | Path) -> Path:
             _money_table(
                 rows,
                 col_widths=[
-                    22 * mm, 16 * mm, 50 * mm, 22 * mm, 20 * mm, 20 * mm, 20 * mm,
+                    20 * mm, 14 * mm, 40 * mm, 22 * mm, 18 * mm, 18 * mm, 16 * mm, 22 * mm,
                 ],
                 right_align_from_col=3,
             )
         )
         flow.append(Spacer(1, 2 * mm))
+        if note.erv_summe > 0:
+            flow.append(
+                Paragraph(
+                    f"<i>Davon ERV-Erhöhung gemäß § 23a RATG: "
+                    f"{_fmt(note.erv_summe)} EUR.</i>",
+                    styles["body"],
+                )
+            )
         flow.append(
             Paragraph(
                 f"<b>Summe Anwaltskosten netto:</b> {_fmt(note.anwalt_netto)} EUR",

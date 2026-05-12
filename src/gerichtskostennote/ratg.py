@@ -19,9 +19,11 @@ _CENT: Final = Decimal("0.01")
 __all__ = [
     "TarifpostNotFound",
     "Tarifpost",
+    "ErvKind",
     "tarifsatz",
     "einheitssatz",
     "streitgenossenzuschlag",
+    "erv_erhoehung",
 ]
 
 
@@ -33,6 +35,14 @@ class Tarifpost(str, Enum):
     TP3A = "3a"
     TP3B = "3b"
     TP3C = "3c"
+
+
+class ErvKind(str, Enum):
+    """Erhöhungsarten nach § 23a RATG."""
+
+    EINLEITEND = "einleitend"
+    WEITERER = "weiterer"
+    GRUNDBUCH_FIRMENBUCH = "grundbuch_firmenbuch"
 
 
 @dataclass(frozen=True)
@@ -258,3 +268,40 @@ def streitgenossenzuschlag(
     prozent = Decimal(10) + Decimal(5) * weitere
     prozent = min(prozent, Decimal(50))
     return _to_cents(grundlage_d * prozent / Decimal(100))
+
+
+_ERV_CACHE: dict[ErvKind, tuple[Decimal, Decimal]] = {}
+
+
+def _load_erv() -> None:
+    if _ERV_CACHE:
+        return
+    raw = json.loads((_DATA_DIR / "erv.json").read_text())
+    for kind in ErvKind:
+        entry = raw["kinds"][kind.value]
+        _ERV_CACHE[kind] = (
+            _D(entry["betrag_gesetz"]),
+            _D(entry["betrag_ab_2023_05_01"]),
+        )
+
+
+def erv_erhoehung(kind: str | ErvKind, *, valorized: bool = True) -> Decimal:
+    """Erhöhungsbetrag nach § 23a RATG für ERV-eingebrachte Schriftsätze.
+
+    :param kind: ``"einleitend"`` (verfahrenseinleitender Schriftsatz),
+        ``"weiterer"`` (jeder weitere ERV-Schriftsatz) oder
+        ``"grundbuch_firmenbuch"`` (Urkundensammlung GB/FB).
+    :param valorized: ``True`` → BGBl. II Nr. 131/2023 (5,00 / 2,60 / 9,50);
+        ``False`` → Gesetzeswortlaut (3,60 / 1,80 / 7,00).
+    """
+
+    _load_erv()
+    try:
+        kind_enum = ErvKind(kind) if not isinstance(kind, ErvKind) else kind
+    except ValueError as exc:
+        raise ValueError(
+            f"Unbekannte ERV-Art: {kind!r}. "
+            "Erlaubt: 'einleitend', 'weiterer', 'grundbuch_firmenbuch'."
+        ) from exc
+    gesetz, val = _ERV_CACHE[kind_enum]
+    return val if valorized else gesetz

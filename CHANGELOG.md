@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **§ 23a RATG (Web-ERV)** als richtiges Feature: pro Anwaltsleistung kann
+  jetzt `"erv": "einleitend"` (5,00 EUR valorisiert), `"weiterer"`
+  (2,60 EUR; Alias `true`) oder `"grundbuch_firmenbuch"` (9,50 EUR) gesetzt
+  werden. Die ERV-Erhöhung fließt in den Netto-Betrag und damit die
+  USt-Basis ein; ist gemäß § 23a Satz 3 RATG aber bei der Bemessung von
+  Einheitssatz und Streitgenossenzuschlag ausgenommen. Markdown- und PDF-
+  Tabellen haben eine neue ERV-Spalte plus Gesamtsummen-Hinweis.
+- `data/ratg/erv.json` mit den drei § 23a-Stufen (Anm. 1–3) inkl.
+  Gesetzes- und valorisierten Werten (BGBl. II Nr. 131/2023 ab 1.5.2023).
+- `ratg.erv_erhoehung(kind, *, valorized=True)` und `ratg.ErvKind` Enum.
+- 7 neue Tests in `tests/test_renderer.py` (ERV-Lookups, Boolean-Alias,
+  Bestätigung dass ES/SG ohne ERV gerechnet werden, Markdown-Inhalt,
+  Fehlerpfad bei unbekanntem Kind).
 - RATG-Tarifdaten für **TP 3 Teil B** (Berufungen, Berufungsbeantwortungen,
   Rekurse, Rekursbeantwortungen, Beschwerden) und **TP 3 Teil C** (Revisionen,
   Revisionsrekurse, Rekurse an den OGH) als `data/ratg/tp3b.json` und

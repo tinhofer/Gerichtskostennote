@@ -27,7 +27,7 @@ Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](dat
 pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
 pip install -e ".[pdf]"       # + PDF-Renderer (reportlab)
 pip install -e ".[test]"      # + pytest, pypdf, reportlab
-python -m pytest              # 120 Tests (GGG + RATG + Renderer/CLI + PDF)
+python -m pytest              # 127 Tests (GGG + RATG + Renderer/CLI + PDF + ERV)
 ```
 
 ### CLI: vollständige Kostennote aus JSON
@@ -66,7 +66,12 @@ Eingabe-Schema (siehe [`examples/klage_15000.json`](examples/klage_15000.json)):
 }
 ```
 
-Optional je Anwaltsleistung: `personen_einer_seite`, `weitere_personen_andere_seite`, `einheitssatz_multiplier` (für § 23 Abs. 5–9 RATG Spezialfälle). Je Gerichtsgebühr: `ermaessigung` (`rueckziehung_vor_zustellung`, `rueckziehung_erste_tagsatzung`, `einstweilige_verfuegung`, `rueckziehung_vor_bewilligung`) und `bemessungsgrundlage` (falls vom Streitwert abweichend).
+Optional je Anwaltsleistung:
+- `personen_einer_seite`, `weitere_personen_andere_seite` — überschreibt `default_personen_einer_seite` zeilenweise.
+- `einheitssatz_multiplier` — für § 23 Abs. 5–9 RATG Spezialfälle.
+- `erv` — ERV-Erhöhung nach § 23a RATG. Werte: `"einleitend"` (5,00 EUR valorisiert), `"weiterer"` (2,60 EUR; Alias: `true`), `"grundbuch_firmenbuch"` (9,50 EUR). Der Erhöhungsbetrag fließt in den Netto-Betrag und damit in die USt-Basis, ist aber per § 23a RATG explizit aus ES- und SG-Basis ausgenommen.
+
+Je Gerichtsgebühr: `ermaessigung` (`rueckziehung_vor_zustellung`, `rueckziehung_erste_tagsatzung`, `einstweilige_verfuegung`, `rueckziehung_vor_bewilligung`) und `bemessungsgrundlage` (falls vom Streitwert abweichend).
 
 ### Bibliotheks-API
 
@@ -108,6 +113,7 @@ Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data
 - [x] CLI `gkn` + Markdown-Renderer (Eingabe Streitwert/Leistungen → vollständige Kostennote)
 - [x] PDF-Renderer (ReportLab Platypus, A4-Layout)
 - [x] RATG TP 3 Teil B (Berufung/Rekurs) + Teil C (Revision/OGH)
+- [x] § 23a RATG: ERV-Erhöhung (Web-ERV, 5,00 / 2,60 / 9,50 EUR valorisiert)
 - [ ] RATG TP 3A (Exekutionsverfahren), TP 4–9
 - [ ] § 23 Abs. 5–10 RATG (Verdoppelung/Verdreifachung des Einheitssatzes in Spezialfällen), § 23a (ERV)
 - [ ] GGG TP 5–8 (Insolvenz, Außerstreit, Pflegschaft, Verlassenschaft)

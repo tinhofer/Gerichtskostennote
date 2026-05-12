@@ -101,6 +101,103 @@ def test_compute_respects_per_leistung_personen_override() -> None:
     assert note.leistungen[1].streitgenossen > 0
 
 
+def test_compute_erv_einleitend() -> None:
+    payload = {
+        "streitwert": 5000,
+        "anwaltsleistungen": [
+            {"tp": "3a", "beschreibung": "Klage", "erv": "einleitend"}
+        ],
+    }
+    note = compute(payload)
+    row = note.leistungen[0]
+    assert row.erv == Decimal("5.00")
+    assert row.erv_kind == "einleitend"
+    # Verdienst (208.20) + ES (60% = 124.92) + ERV (5.00) = 338.12
+    assert row.netto == Decimal("338.12")
+
+
+def test_compute_erv_weiterer() -> None:
+    payload = {
+        "streitwert": 5000,
+        "anwaltsleistungen": [
+            {"tp": "3a", "beschreibung": "Vorbereitender Schriftsatz", "erv": "weiterer"}
+        ],
+    }
+    note = compute(payload)
+    row = note.leistungen[0]
+    assert row.erv == Decimal("2.60")
+
+
+def test_compute_erv_boolean_true_means_weiterer() -> None:
+    payload = {
+        "streitwert": 5000,
+        "anwaltsleistungen": [
+            {"tp": "3a", "beschreibung": "X", "erv": True}
+        ],
+    }
+    assert compute(payload).leistungen[0].erv == Decimal("2.60")
+
+
+def test_compute_erv_not_in_ust_base_unaffected() -> None:
+    """ERV is added to netto and therefore enters USt base — by design,
+    since § 23a RATG describes it as an Erhöhung der Entlohnung."""
+    payload = {
+        "streitwert": 5000,
+        "anwaltsleistungen": [
+            {"tp": "3a", "beschreibung": "X"},
+            {"tp": "3a", "beschreibung": "Y", "erv": "weiterer"},
+        ],
+    }
+    note = compute(payload)
+    # Row 1: 208.20 + 124.92 = 333.12; Row 2: 333.12 + 2.60 = 335.72
+    assert note.erv_summe == Decimal("2.60")
+    assert note.anwalt_netto == Decimal("668.84")
+
+
+def test_compute_erv_not_in_einheitssatz_or_streitgenossen_base() -> None:
+    """§ 23a Satz 3 RATG: Erhöhungsbetrag wird bei ES und SG nicht berücksichtigt."""
+    payload = {
+        "streitwert": 5000,
+        "default_personen_einer_seite": 2,
+        "anwaltsleistungen": [
+            {"tp": "3a", "beschreibung": "Klage", "erv": "einleitend"}
+        ],
+    }
+    note = compute(payload)
+    row = note.leistungen[0]
+    # ES = 60 % of 208.20 = 124.92 (NOT of 208.20 + 5.00)
+    assert row.einheitssatz == Decimal("124.92")
+    # SG = 10 % of (verdienst + ES) = 10 % of 333.12 = 33.31 (NOT of 338.12)
+    assert row.streitgenossen == Decimal("33.31")
+
+
+def test_compute_unknown_erv_kind_rejected() -> None:
+    payload = {
+        "streitwert": 5000,
+        "anwaltsleistungen": [{"tp": "3a", "beschreibung": "X", "erv": "schmarrn"}],
+    }
+    with pytest.raises(ValueError):
+        compute(payload)
+
+
+def test_render_markdown_shows_erv_summary() -> None:
+    note = compute(
+        {
+            "streitwert": 5000,
+            "anwaltsleistungen": [
+                {"tp": "3a", "beschreibung": "Klage", "erv": "einleitend"},
+                {"tp": "3a", "beschreibung": "Schriftsatz", "erv": "weiterer"},
+            ],
+        }
+    )
+    md = render_markdown(note)
+    assert "ERV" in md  # column header
+    assert "5,00" in md  # einleitend amount
+    assert "2,60" in md  # weiterer amount
+    assert "§ 23a RATG" in md
+    assert "7,60" in md  # ERV total
+
+
 def test_compute_with_ggg_ermaessigung() -> None:
     payload = {
         "streitwert": 25_000,
