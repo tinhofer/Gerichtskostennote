@@ -114,12 +114,12 @@ Auto-generierte Fahrtkosten-Barauslagen kommen *vor* expliziten `barauslagen`-Ei
 
 ## Workflow / PR
 
-- Alle Arbeit findet aktuell auf Branch `claude/plan-next-priorities-hRvRZ` statt (Default-Branch ist `main`).
-- **PR #1** ist offen und sammelt Commits: <https://github.com/tinhofer/Gerichtskostennote/pull/1>
-- Bei einer neuen Session: `git fetch origin && git checkout claude/plan-next-priorities-hRvRZ && git pull` zum aktuellen Stand kommen.
-- PR-Updates via `mcp__github__update_pull_request` (Title + Body aktualisieren, damit der Stand klar ist).
-- PR-Aktivitäts-Abonnement ist aktiv: CI-Failures und Review-Comments kommen als `<github-webhook-activity>` rein.
-- Default-Branch wurde vom Bootstrap-Branch `claude/initial-repo-setup-067NM` auf `main` umgestellt; alter Branch existiert noch (kann gelöscht werden, wenn der User möchte).
+- `main` ist Default-Branch und enthält den aktuellen Stand. Neue Arbeit immer auf einem eigenen Branch von `main` beginnen: `git fetch origin && git checkout main && git pull && git checkout -b claude/<thema>`.
+- Pro Thema ein PR gegen `main`; der User merged selbst. Nicht direkt auf `main` pushen.
+- PR-Beschreibung bei weiteren Commits mit `mcp__github__update_pull_request` aktuell halten.
+- Ein offener PR wird in der Session beobachtet: CI-Ergebnisse, Reviews und der Merge kommen als Benachrichtigungen herein.
+- Bisherige PRs (beide gemerged): #1 GGG/RATG-Rechner, Renderer, CLI; #2 GGG-Valorisierung 1.8.2026 und Budgetbegleitgesetz 2027-2028.
+- Alte Remote-Branches `claude/initial-repo-setup-067NM`, `claude/plan-next-priorities-hRvRZ` und `claude/ggg-novellen-aug-okt-2026` sind erledigt; löschen nur auf ausdrückliche Anweisung des Users.
 
 ## Rechtsquellen online prüfen
 
