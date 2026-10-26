@@ -115,7 +115,7 @@ def _load() -> None:
             prozentsatz=_D(tp1["Z_I"]["ueber_350000"]["prozentsatz"]),
             is_promille=False,
             sockel_gesetz=_D(tp1["Z_I"]["ueber_350000"]["sockel_gesetz"]),
-            sockel_valorisiert=_D(tp1["Z_I"]["ueber_350000"]["sockel_ab_2025_04_01"]),
+            sockel_valorisiert=_D(tp1["Z_I"]["ueber_350000"]["sockel_ab_2026_08_01"]),
             apply_to_overflow_only=False,
         ),
     )
@@ -128,7 +128,7 @@ def _load() -> None:
             prozentsatz=_D(tp2["ueber_350000"]["prozentsatz"]),
             is_promille=False,
             sockel_gesetz=_D(tp2["ueber_350000"]["sockel_gesetz"]),
-            sockel_valorisiert=_D(tp2["ueber_350000"]["sockel_ab_2025_04_01"]),
+            sockel_valorisiert=_D(tp2["ueber_350000"]["sockel_ab_2026_08_01"]),
             apply_to_overflow_only=False,
         ),
     )
@@ -142,7 +142,7 @@ def _load() -> None:
             is_promille=False,
             sockel_gesetz=_D(tp3["lit_a"]["ueber_350000"]["sockel_gesetz"]),
             sockel_valorisiert=_D(
-                tp3["lit_a"]["ueber_350000"]["sockel_ab_2025_04_01"]
+                tp3["lit_a"]["ueber_350000"]["sockel_ab_2026_08_01"]
             ),
             apply_to_overflow_only=False,
         ),
@@ -150,7 +150,7 @@ def _load() -> None:
     _CACHE[Tarifpost.TP3B] = _PercentMinimum(
         prozentsatz=_D(tp3["lit_b"]["prozentsatz"]),
         mindestbetrag_gesetz=_D(tp3["lit_b"]["mindestbetrag_gesetz"]),
-        mindestbetrag_valorisiert=_D(tp3["lit_b"]["mindestbetrag_ab_2025_04_01"]),
+        mindestbetrag_valorisiert=_D(tp3["lit_b"]["mindestbetrag_ab_2026_08_01"]),
     )
 
     tp4 = json.loads((_DATA_DIR / "tp4_exekutionsverfahren.json").read_text())
@@ -162,28 +162,28 @@ def _load() -> None:
             is_promille=True,
             sockel_gesetz=_D(tp4["Z_I"]["lit_a"]["ueber_70000"]["sockel_gesetz"]),
             sockel_valorisiert=_D(
-                tp4["Z_I"]["lit_a"]["ueber_70000"]["sockel_ab_2025_04_01"]
+                tp4["Z_I"]["lit_a"]["ueber_70000"]["sockel_ab_2026_08_01"]
             ),
             apply_to_overflow_only=True,
         ),
     )
     _CACHE[Tarifpost.TP4_I_B] = _FixedFee(
         betrag_gesetz=_D(tp4["Z_I"]["lit_b"]["betrag_gesetz"]),
-        betrag_valorisiert=_D(tp4["Z_I"]["lit_b"]["betrag_ab_2025_04_01"]),
+        betrag_valorisiert=_D(tp4["Z_I"]["lit_b"]["betrag_ab_2026_08_01"]),
     )
     _CACHE[Tarifpost.TP4_II_A] = _MultiplierOf(
         base=Tarifpost.TP4_I_A, faktor=_D("1.5")
     )
     _CACHE[Tarifpost.TP4_II_B] = _FixedFee(
         betrag_gesetz=_D(tp4["Z_II"]["lit_b"]["betrag_gesetz"]),
-        betrag_valorisiert=_D(tp4["Z_II"]["lit_b"]["betrag_ab_2025_04_01"]),
+        betrag_valorisiert=_D(tp4["Z_II"]["lit_b"]["betrag_ab_2026_08_01"]),
     )
     _CACHE[Tarifpost.TP4_III_A] = _MultiplierOf(
         base=Tarifpost.TP4_I_A, faktor=_D("2.0")
     )
     _CACHE[Tarifpost.TP4_III_B] = _FixedFee(
         betrag_gesetz=_D(tp4["Z_III"]["lit_b"]["betrag_gesetz"]),
-        betrag_valorisiert=_D(tp4["Z_III"]["lit_b"]["betrag_ab_2025_04_01"]),
+        betrag_valorisiert=_D(tp4["Z_III"]["lit_b"]["betrag_ab_2026_08_01"]),
     )
 
 
@@ -192,7 +192,7 @@ def _bracket(raw: dict) -> _Bracket:
         ueber=_D(raw["ueber"]),
         bis=_D(raw["bis"]),
         betrag_gesetz=_D(raw["betrag_gesetz"]),
-        betrag_valorisiert=_D(raw["betrag_ab_2025_04_01"]),
+        betrag_valorisiert=_D(raw["betrag_ab_2026_08_01"]),
     )
 
 
@@ -224,8 +224,8 @@ def pauschalgebuehr(
         ``"3a"``, ``"4Ia"``.
     :param basis: Bemessungsgrundlage (Streitwert / Berufungsinteresse /
         Anspruch) in Euro.
-    :param valorized: Falls ``True`` (default), wird der seit 1.4.2025
-        gemäß BGBl. II Nr. 51/2025 valorisierte Betrag herangezogen,
+    :param valorized: Falls ``True`` (default), wird der seit 1.8.2026
+        gemäß BGBl. II Nr. 227/2026 valorisierte Betrag herangezogen,
         sonst der im GGG-Tarif selbst angeführte Betrag.
     :param ermaessigung: Optionaler Reduktionsfaktor (z. B.
         ``Ermaessigung.RUECKZIEHUNG_VOR_ZUSTELLUNG`` → 1/4 nach Anm. 3 zu TP 1).

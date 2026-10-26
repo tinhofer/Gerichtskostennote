@@ -53,9 +53,9 @@ def test_render_pdf_contains_key_facts(tmp_path: Path) -> None:
     assert "241,69" in text  # USt
     assert "1.450,15" in text  # brutto
     # GGG
-    assert "974,00" in text
+    assert "1.030,00" in text
     # Gesamt
-    assert "2.424,15" in text
+    assert "2.480,15" in text
 
 
 def test_render_pdf_handles_minimal_payload(tmp_path: Path) -> None:
@@ -103,7 +103,7 @@ def test_cli_writes_pdf_when_output_ends_in_pdf(tmp_path: Path) -> None:
     assert exit_code == 0
     assert target.read_bytes()[:4] == b"%PDF"
     text = _pdf_text(target)
-    assert "2.424,15" in text
+    assert "2.480,15" in text
 
 
 def test_cli_pdf_via_explicit_format(tmp_path: Path) -> None:
