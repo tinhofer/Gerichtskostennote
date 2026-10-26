@@ -27,7 +27,7 @@ Siehe [`data/ggg/README.md`](data/ggg/README.md) und [`data/ratg/README.md`](dat
 pip install -e .              # Bibliothek + CLI (`gkn`) im Editable-Modus
 pip install -e ".[pdf]"       # + PDF-Renderer (reportlab)
 pip install -e ".[test]"      # + pytest, pypdf, reportlab
-python -m pytest              # 151 Tests (GGG + RATG + Renderer/CLI + PDF + ERV + Barauslagen + Fahrtkosten + dauer_stunden)
+python -m pytest              # 158 Tests (GGG + RATG + Renderer/CLI + PDF + ERV + Barauslagen + Fahrtkosten + dauer_stunden)
 ```
 
 ### CLI: vollständige Kostennote aus JSON
@@ -91,7 +91,7 @@ from gerichtskostennote import (
 )
 
 # --- GGG: Pauschalgebühr ---
-pauschalgebuehr("1", 25_000)                         # Decimal('974')
+pauschalgebuehr("1", 25_000)                         # Decimal('1030')
 pauschalgebuehr("1", 25_000, valorized=False)        # Decimal('792') — Gesetzeswert
 pauschalgebuehr(
     "1", 25_000, ermaessigung=Ermaessigung.RUECKZIEHUNG_VOR_ZUSTELLUNG
@@ -132,10 +132,10 @@ Anmerkung: Die Bibliothek liest die JSON-Tarifdaten relativ zum Repo-Root (`data
 
 Die Tarifdaten sind aus den RIS-Konsolidaten (Bundeskanzleramt Österreich) extrahiert. URL-Muster für die Geltende Fassung:
 
-- GGG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002651>
-- RATG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002603>
+- GGG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002667>
+- RATG: <https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002143>
 
-Die Valorisierung erfolgt durch Verordnung der Bundesministerin für Justiz nach § 31a GGG, zuletzt **BGBl. II Nr. 51/2025** (in Kraft 1.4.2025).
+Die Valorisierung erfolgt durch Verordnung der Bundesministerin für Justiz nach § 31a GGG, zuletzt **BGBl. II Nr. 227/2026** (in Kraft 1.8.2026). Das Budgetbegleitgesetz 2027-2028 (BGBl. I Nr. 62/2026) hat ab 1.10.2026 einzelne Sondergebühren in TP 1–3 neu gefasst; Details in [`data/ggg/README.md`](data/ggg/README.md).
 
 ## Mitwirken
 

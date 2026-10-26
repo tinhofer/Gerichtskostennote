@@ -2,13 +2,32 @@
   "law": "Gerichtsgebührengesetz (GGG)",
   "jurisdiction": "AT",
   "source_document": "20260414 Gerichtsgebührengesetz_gesamt.pdf",
-  "source_url_pattern": "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002651",
-  "stand": "2026-04-14",
+  "source_url_pattern": "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002667",
+  "stand": "2026-04-14 (RIS-Konsolidat), nachgeführt bis BGBl. I Nr. 62/2026 und BGBl. II Nr. 227/2026",
   "valorisierung": {
-    "verordnung": "BGBl. II Nr. 51/2025",
-    "wirksam_ab": "2025-04-01",
-    "hinweis": "Felder 'betrag_ab_2025_04_01' enthalten die durch Valorisierung ergänzten Beträge. Felder 'betrag_gesetz' sind die im GGG selbst angeführten Werte."
+    "aktuell": {
+      "verordnung": "BGBl. II Nr. 227/2026",
+      "wirksam_ab": "2026-08-01",
+      "felder": "*_ab_2026_08_01"
+    },
+    "historie": [
+      {
+        "verordnung": "BGBl. II Nr. 51/2025",
+        "wirksam_ab": "2025-04-01",
+        "wirksam_bis": "2026-07-31",
+        "felder": "*_ab_2025_04_01"
+      }
+    ],
+    "hinweis": "Felder 'betrag_gesetz' sind die im GGG selbst angeführten Werte. Der Rechner verwendet mit valorized=True die Felder *_ab_2026_08_01."
   },
+  "gesetzesaenderungen": [
+    {
+      "gesetz": "Budgetbegleitgesetz 2027-2028, BGBl. I Nr. 62/2026, Art. 14",
+      "kundgemacht": "2026-07-29",
+      "relevant": "TP 1 Anm. 9, TP 2 Anm. 6, TP 3 Anm. 6 (ab 2026-10-01): JN § 49 Abs. 2 Z 2a-2d; neue Gebühren für EV nach §§ 382b-382d EO; Fälligkeit § 2 Z 1 lit. c/d",
+      "abgebildet_in": "spezialgebuehren mit gilt_ab/gilt_bis"
+    }
+  ],
   "tarifposten": [
     {
       "id": "tp1",

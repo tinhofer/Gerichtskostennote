@@ -65,13 +65,13 @@ def test_compute_anwalt_totals() -> None:
 def test_compute_gerichtsgebuehren() -> None:
     note = compute(_example_payload())
     assert len(note.gerichtsgebuehren) == 1
-    assert note.gerichtsgebuehren[0].betrag == Decimal("974")  # TP 1 valorisiert
-    assert note.gerichts_summe == Decimal("974")
+    assert note.gerichtsgebuehren[0].betrag == Decimal("1030")  # TP 1 valorisiert (ab 1.8.2026)
+    assert note.gerichts_summe == Decimal("1030")
 
 
 def test_compute_gesamtsumme() -> None:
     note = compute(_example_payload())
-    assert note.gesamt == Decimal("2424.15")
+    assert note.gesamt == Decimal("2480.15")
 
 
 def test_compute_missing_streitwert_rejected() -> None:
@@ -471,8 +471,8 @@ def test_compute_with_ggg_ermaessigung() -> None:
         ],
     }
     note = compute(payload)
-    # 974 / 4 = 243.50
-    assert note.gerichtsgebuehren[0].betrag == Decimal("243.50")
+    # 1 030 / 4 = 257.50
+    assert note.gerichtsgebuehren[0].betrag == Decimal("257.50")
 
 
 # ---------------------------------------------------------------------------
@@ -491,8 +491,8 @@ def test_render_markdown_contains_key_facts() -> None:
     assert "| Datum | TP | Beschreibung |" in md
     # Computed amounts (German number formatting)
     assert "487,00" in md  # TP 3a verdienst
-    assert "974,00" in md  # GGG TP 1
-    assert "2.424,15" in md  # Gesamt
+    assert "1.030,00" in md  # GGG TP 1
+    assert "2.480,15" in md  # Gesamt
 
 
 def test_render_markdown_omits_empty_sections() -> None:
@@ -513,7 +513,7 @@ def test_cli_writes_to_stdout(capsys: pytest.CaptureFixture[str]) -> None:
     assert exit_code == 0
     out = capsys.readouterr().out
     assert "# Kostennote" in out
-    assert "2.424,15" in out
+    assert "2.480,15" in out
 
 
 def test_cli_writes_to_output_file(tmp_path: Path) -> None:

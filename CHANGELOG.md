@@ -7,7 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **GGG-Valorisierung BGBl. II Nr. 227/2026** (in Kraft 1.8.2026): alle festen
+  Beträge, Sockel- und Mindestbeträge in TP 1–4 um das Feld
+  `*_ab_2026_08_01` ergänzt; der Rechner verwendet sie mit `valorized=True`.
+  Die Werte nach BGBl. II Nr. 51/2025 bleiben als Historie erhalten.
+  Beispiel: TP 1 bei Streitwert 25.000 EUR 974 → 1.030 EUR.
+- RIS-Gesetzesnummern in README und `data/ggg/index.json` korrigiert
+  (GGG 10002667, RATG 10002143).
+
 ### Added
+- **Budgetbegleitgesetz 2027-2028, BGBl. I Nr. 62/2026, Art. 14** (ab 1.10.2026)
+  in den GGG-Daten erfasst: TP 1 Anm. 9 / TP 2 Anm. 6 / TP 3 Anm. 6 für
+  Streitigkeiten nach § 49 Abs. 2 Z 2a–2d JN (410 / 449 / 671 EUR) und neue
+  Gebühren für EV nach §§ 382b–382d EO (205 / 224 / 335 EUR), jeweils mit
+  `gilt_ab` / `gilt_bis`. Fälligkeitsänderungen (§ 2 Z 1 lit. c/d) in
+  `data/ggg/README.md` dokumentiert. Die Sondergebühren werden vom Rechner
+  noch nicht verwendet.
+- Datenintegritätstests: jeder 2025er-Wert hat einen höheren 2026er-Wert;
+  BBG-Sondergebühren mit Gültigkeitszeitraum vorhanden.
 - **Tagsatzungs-Stundenfaktor** für TP 3 Abschnitt II: Pro Anwaltsleistung kann
   `dauer_stunden` (z. B. 2, 3, 4) angegeben werden. Erste Stunde voller
   Tarifsatz, jede weitere angefangene Stunde die Hälfte (TP 3 Abschnitt II

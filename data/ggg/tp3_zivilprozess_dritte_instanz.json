@@ -4,26 +4,26 @@
   "title": "Pauschalgebühren für das Rechtsmittelverfahren dritter Instanz und für Klagen nach § 615 ZPO",
   "section": "Tarif I. Zivilprozesse",
   "basis": "Revisionsinteresse",
-  "source": "GGG idgF, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 51/2025 ab 1.4.2025)",
+  "source": "GGG idF BGBl. I Nr. 62/2026; Tarifwerte BGBl. II Nr. 51/2025 (ab 1.4.2025) und BGBl. II Nr. 227/2026 (ab 1.8.2026)",
   "currency": "EUR",
   "lit_a": {
     "description": "Rechtsmittelverfahren dritter Instanz",
     "brackets": [
-      { "ueber": 0,      "bis": 2000,   "betrag_gesetz": 228,   "betrag_ab_2025_04_01": 281,   "anmerkung": 1 },
-      { "ueber": 2000,   "bis": 3500,   "betrag_gesetz": 381,   "betrag_ab_2025_04_01": 469,   "anmerkung": 2 },
-      { "ueber": 3500,   "bis": 7000,   "betrag_gesetz": 762,   "betrag_ab_2025_04_01": 938,   "anmerkung": 3 },
-      { "ueber": 7000,   "bis": 35000,  "betrag_gesetz": 1526,  "betrag_ab_2025_04_01": 1878,  "anmerkung": 4 },
-      { "ueber": 35000,  "bis": 70000,  "betrag_gesetz": 3051,  "betrag_ab_2025_04_01": 3754,  "anmerkung": 5 },
-      { "ueber": 70000,  "bis": 140000, "betrag_gesetz": 6104,  "betrag_ab_2025_04_01": 7510,  "anmerkung": 6 },
-      { "ueber": 140000, "bis": 210000, "betrag_gesetz": 9156,  "betrag_ab_2025_04_01": 11265, "anmerkung": 7 },
-      { "ueber": 210000, "bis": 280000, "betrag_gesetz": 12211, "betrag_ab_2025_04_01": 15024, "anmerkung": 8 },
-      { "ueber": 280000, "bis": 350000, "betrag_gesetz": 15263, "betrag_ab_2025_04_01": 18779, "anmerkung": 9 }
+      { "ueber": 0,      "bis": 2000,   "betrag_gesetz": 228,   "betrag_ab_2025_04_01": 281, "betrag_ab_2026_08_01": 297,   "anmerkung": 1 },
+      { "ueber": 2000,   "bis": 3500,   "betrag_gesetz": 381,   "betrag_ab_2025_04_01": 469, "betrag_ab_2026_08_01": 496,   "anmerkung": 2 },
+      { "ueber": 3500,   "bis": 7000,   "betrag_gesetz": 762,   "betrag_ab_2025_04_01": 938, "betrag_ab_2026_08_01": 992,   "anmerkung": 3 },
+      { "ueber": 7000,   "bis": 35000,  "betrag_gesetz": 1526,  "betrag_ab_2025_04_01": 1878, "betrag_ab_2026_08_01": 1985,  "anmerkung": 4 },
+      { "ueber": 35000,  "bis": 70000,  "betrag_gesetz": 3051,  "betrag_ab_2025_04_01": 3754, "betrag_ab_2026_08_01": 3968,  "anmerkung": 5 },
+      { "ueber": 70000,  "bis": 140000, "betrag_gesetz": 6104,  "betrag_ab_2025_04_01": 7510, "betrag_ab_2026_08_01": 7939,  "anmerkung": 6 },
+      { "ueber": 140000, "bis": 210000, "betrag_gesetz": 9156,  "betrag_ab_2025_04_01": 11265, "betrag_ab_2026_08_01": 11908, "anmerkung": 7 },
+      { "ueber": 210000, "bis": 280000, "betrag_gesetz": 12211, "betrag_ab_2025_04_01": 15024, "betrag_ab_2026_08_01": 15881, "anmerkung": 8 },
+      { "ueber": 280000, "bis": 350000, "betrag_gesetz": 15263, "betrag_ab_2025_04_01": 18779, "betrag_ab_2026_08_01": 19851, "anmerkung": 9 }
     ],
     "ueber_350000": {
       "formel": "2,4% vom jeweiligen Revisionsinteresse zuzüglich Sockelbetrag",
       "prozentsatz": 2.4,
       "sockel_gesetz": 8096,
-      "sockel_ab_2025_04_01": 13477,
+      "sockel_ab_2025_04_01": 13477, "sockel_ab_2026_08_01": 15318,
       "anmerkung": 10
     }
   },
@@ -32,17 +32,35 @@
     "formel": "5% vom Streitwert, mindestens Sockelbetrag",
     "prozentsatz": 5.0,
     "mindestbetrag_gesetz": 5884,
-    "mindestbetrag_ab_2025_04_01": 7239,
+    "mindestbetrag_ab_2025_04_01": 7239, "mindestbetrag_ab_2026_08_01": 7652,
     "anmerkung": 11
   },
   "spezialgebuehren": {
     "jn_49_2_2a_2b": {
       "betrag_gesetz": 545,
-      "betrag_ab_2025_04_01": 671,
-      "quelle": "Anm. 6 / Anm. 12"
+      "betrag_ab_2025_04_01": 671, "betrag_ab_2026_08_01": 709,
+      "gilt_bis": "2026-09-30",
+      "quelle": "Anm. 6 aF (vor BGBl. I Nr. 62/2026)"
+    },
+    "jn_49_2_2a_2d": {
+      "betrag_ab_2026_10_01": 671,
+      "gilt_ab": "2026-10-01",
+      "quelle": "Anm. 6 Satz 1 idF BGBl. I Nr. 62/2026",
+      "hinweis": "Die VO BGBl. II Nr. 227/2026 (709 Euro) betraf nur die alte Anm. 6. Für die Neufassung ist nach Art. VI Z 85 lit. f GGG der VPI März 2026 Ausgangsbasis der nächsten Valorisierung; 671 Euro gilt daher unverändert ab 1.10.2026 (RIS-Fassung ab 1.10.2026 bestätigt den Wortlaut)."
+    },
+    "ev_382b_382d_eo": {
+      "betrag_ab_2026_10_01": 335,
+      "gilt_ab": "2026-10-01",
+      "quelle": "Anm. 6 Satz 3 idF BGBl. I Nr. 62/2026",
+      "zahlungspflicht": "Rechtsmittelwerber, wenn das Rechtsmittel zumindest teilweise erfolglos blieb (§ 7 Abs. 1 Z 1a GGG)",
+      "fruehere_rechtslage": "bis 30.9.2026 gebührenfrei (Anm. 1a letzter Satz aF)"
     }
   },
   "ermaessigungen": {
-    "einstweilige_verfuegung": { "faktor": 0.5, "quelle": "Anm. 1a" }
+    "einstweilige_verfuegung": {
+      "faktor": 0.5,
+      "quelle": "Anm. 1a",
+      "hinweis": "Gilt nicht für EV nach §§ 382b–382d EO; diese siehe spezialgebuehren.ev_382b_382d_eo"
+    }
   }
 }
