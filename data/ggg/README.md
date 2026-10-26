@@ -37,7 +37,9 @@ In `spezialgebuehren` stehen Beträge, die das Budgetbegleitgesetz 2027-2028 neu
 | `jn_49_2_2a_2d` (Streitigkeiten nach § 49 Abs. 2 Z 2a–2d JN) | 410 | 449 | 671 | ab 1.10.2026 |
 | `ev_382b_382d_eo*` (EV nach §§ 382b–382d EO) | 205 | 224 | 335 | ab 1.10.2026; vorher gebührenfrei |
 
-**Offene Auslegungsfrage:** Für `jn_49_2_2a_2d` nennt der Gesetzestext 410 / 449 / 671 EUR, also weniger als die Beträge, auf die die Verordnung die alten Anmerkungen einen Tag später angehoben hat. Die Daten folgen dem Gesetzeswortlaut; gegen die konsolidierte RIS-Fassung prüfen.
+**Warum ab 1.10.2026 weniger als im August/September:** Die Verordnung BGBl. II Nr. 227/2026 hob die *alten* Anmerkungen auf 433 / 475 / 709 EUR an. Die Neufassung durch das BBG nennt 410 / 449 / 671 EUR; nach Art. VI Z 85 lit. f GGG ist für die neu geregelten Tatbestände der VPI März 2026 Ausgangsbasis der nächsten Valorisierung — derselbe Index, auf dem die Verordnung beruht. Die BBG-Beträge entsprechen also dem Preisniveau März 2026 und gelten unverändert, bis der VPI wieder um mehr als 5 % darüber liegt. Die RIS-Fassung ab 1.10.2026 bestätigt den Wortlaut (geprüft 26.10.2026 über die RIS-OGD-API).
+
+Hinweis: Die RIS-Konsolidierung hatte die Beträge der Verordnung BGBl. II Nr. 227/2026 am 26.10.2026 noch nicht in die Fußnoten übernommen (dort stehen weiterhin die Werte ab 1.4.2025). Die Daten hier stützen sich direkt auf das BGBl.
 
 Die halbe Pauschalgebühr für gewöhnliche einstweilige Verfügungen (TP 1 Anm. 2, TP 2/3 Anm. 1a) bleibt unverändert; sie gilt nicht für EV nach §§ 382b–382d EO.
 

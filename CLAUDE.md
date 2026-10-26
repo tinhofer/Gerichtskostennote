@@ -124,7 +124,8 @@ Auto-generierte Fahrtkosten-Barauslagen kommen *vor* expliziten `barauslagen`-Ei
 ## Rechtsquellen online prüfen
 
 - `www.ris.bka.gv.at` ist in der Cloud-Umgebung freigeschaltet, liefert automatisierten Abfragen aber nur eine Bot-Schutzseite (Myra Cloud, HTTP 503) — auch für direkte PDF-Links. Nicht umgehen.
-- Für automatisierte Abfragen die RIS-Open-Data-API auf `data.bka.gv.at` verwenden (muss unter *Allowed domains* der Umgebung eingetragen sein).
+- Für automatisierte Abfragen die RIS-Open-Data-API verwenden: Suche über `data.bka.gv.at/ris/api/v2.6/Bundesrecht?Applikation=BrKons&Gesetzesnummer=10002667&Fassung.FassungVom=JJJJ-MM-TT`, Volltexte über die zurückgelieferten URLs auf `ogd.ris.bka.gv.at` (beide Hosts sind freigeschaltet). Der GGG-Tarif hängt in RIS am Dokument „Art. 1 § 32“.
+- RIS übernimmt Valorisierungsverordnungen mit Verzögerung in die Fußnoten (Stand 26.10.2026: BGBl. II Nr. 227/2026 fehlte noch). Für Beträge immer das BGBl. selbst als Primärquelle nehmen.
 - Ohne Zugriff: den User bitten, BGBl.-PDFs hochzuladen, und mit `pdftotext -layout` auswerten.
 - Nach einem Container-Neustart fehlen ggf. Pakete: `python3 -m pip install -e ".[test]"` (mit `python3 -m pip`, nicht `pip`, sonst landet das Paket im falschen Interpreter).
 
