@@ -1,0 +1,52 @@
+{
+  "law": "Gerichtsgebührengesetz (GGG)",
+  "jurisdiction": "AT",
+  "source_document": "20260414 Gerichtsgebührengesetz_gesamt.pdf",
+  "source_url_pattern": "https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=10002651",
+  "stand": "2026-04-14",
+  "valorisierung": {
+    "verordnung": "BGBl. II Nr. 51/2025",
+    "wirksam_ab": "2025-04-01",
+    "hinweis": "Felder 'betrag_ab_2025_04_01' enthalten die durch Valorisierung ergänzten Beträge. Felder 'betrag_gesetz' sind die im GGG selbst angeführten Werte."
+  },
+  "tarifposten": [
+    {
+      "id": "tp1",
+      "file": "tp1_zivilprozess_erste_instanz.json",
+      "scope": "Zivilprozesse erste Instanz",
+      "basis": "Streitwert"
+    },
+    {
+      "id": "tp2",
+      "file": "tp2_zivilprozess_zweite_instanz.json",
+      "scope": "Zivilprozesse zweite Instanz (Berufung/Rekurs)",
+      "basis": "Berufungsinteresse"
+    },
+    {
+      "id": "tp3",
+      "file": "tp3_zivilprozess_dritte_instanz.json",
+      "scope": "Zivilprozesse dritte Instanz (Revision/Revisionsrekurs) und § 615 ZPO",
+      "basis": "Revisionsinteresse / Streitwert"
+    },
+    {
+      "id": "tp4",
+      "file": "tp4_exekutionsverfahren.json",
+      "scope": "Exekutionsverfahren erste/zweite/dritte Instanz",
+      "basis": "Wert des durchzusetzenden Anspruchs"
+    }
+  ],
+  "bracket_semantics": {
+    "ueber": "Untergrenze exklusiv (Streitwert > ueber)",
+    "bis": "Obergrenze inklusiv (Streitwert <= bis)",
+    "hinweis": "Für Streitwert = ueber-Wert gilt die nächstniedrigere Stufe; das GGG verwendet 'über X bis Y' (exklusiv/inklusiv)."
+  },
+  "open_items": [
+    "TP 5, 6 (Insolvenz-, Reorganisations-, Restrukturierungsverfahren)",
+    "TP 7 (Außerstreitsachen — Pflegschaft, Unterhalt, sozialgerichtliche Verfahren)",
+    "TP 8 (Verlassenschaft)",
+    "TP 9–11 (Eintragungs- und Auszugsgebühren, Firmenbuch)",
+    "TP 12, 12a (Sonstige Außerstreitverfahren)",
+    "TP 13, 13a (Privatanklageverfahren, Rechtsmittel gegen Verwaltungsentscheidungen)",
+    "TP 14, 15 (Justizverwaltungsgebühren)"
+  ]
+}

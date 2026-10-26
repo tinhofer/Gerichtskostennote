@@ -1,0 +1,57 @@
+{
+  "tarifpost": "1",
+  "law": "GGG",
+  "title": "Pauschalgebühren in zivilgerichtlichen Verfahren erster Instanz",
+  "section": "Tarif I. Zivilprozesse",
+  "basis": "Wert des Streitgegenstandes",
+  "source": "GGG idgF, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 51/2025 ab 1.4.2025)",
+  "currency": "EUR",
+  "Z_I": {
+    "description": "Pauschalgebühren in zivilgerichtlichen Verfahren erster Instanz",
+    "brackets": [
+      { "ueber": 0,      "bis": 150,    "betrag_gesetz": 25,    "betrag_ab_2025_04_01": 31,    "anmerkung": 1 },
+      { "ueber": 150,    "bis": 300,    "betrag_gesetz": 48,    "betrag_ab_2025_04_01": 59,    "anmerkung": 2 },
+      { "ueber": 300,    "bis": 700,    "betrag_gesetz": 68,    "betrag_ab_2025_04_01": 84,    "anmerkung": 3 },
+      { "ueber": 700,    "bis": 2000,   "betrag_gesetz": 114,   "betrag_ab_2025_04_01": 140,   "anmerkung": 4 },
+      { "ueber": 2000,   "bis": 3500,   "betrag_gesetz": 182,   "betrag_ab_2025_04_01": 224,   "anmerkung": 5 },
+      { "ueber": 3500,   "bis": 7000,   "betrag_gesetz": 335,   "betrag_ab_2025_04_01": 412,   "anmerkung": 6 },
+      { "ueber": 7000,   "bis": 35000,  "betrag_gesetz": 792,   "betrag_ab_2025_04_01": 974,   "anmerkung": 7 },
+      { "ueber": 35000,  "bis": 70000,  "betrag_gesetz": 1556,  "betrag_ab_2025_04_01": 1914,  "anmerkung": 8 },
+      { "ueber": 70000,  "bis": 140000, "betrag_gesetz": 3112,  "betrag_ab_2025_04_01": 3829,  "anmerkung": 9 },
+      { "ueber": 140000, "bis": 210000, "betrag_gesetz": 4670,  "betrag_ab_2025_04_01": 5746,  "anmerkung": 10 },
+      { "ueber": 210000, "bis": 280000, "betrag_gesetz": 6227,  "betrag_ab_2025_04_01": 7661,  "anmerkung": 11 },
+      { "ueber": 280000, "bis": 350000, "betrag_gesetz": 7783,  "betrag_ab_2025_04_01": 9576,  "anmerkung": 12 }
+    ],
+    "ueber_350000": {
+      "formel": "1,2% vom jeweiligen Streitwert zuzüglich Sockelbetrag",
+      "prozentsatz": 1.2,
+      "sockel_gesetz": 4203,
+      "sockel_ab_2025_04_01": 6964,
+      "anmerkung": 13
+    },
+    "spezialgebuehren": {
+      "verkehr_unterlassung": {
+        "betrag": 70,
+        "quelle": "Anm. 5",
+        "hinweis": "Pauschalgebühr für KFZ-Unterlassungsklagen; Erhöhung bei Verfahrensfortgang"
+      },
+      "jn_49_2_2a_2b": {
+        "betrag_gesetz": 333,
+        "betrag_ab_2025_04_01": 410,
+        "quelle": "Anm. 9 / Anm. 15"
+      }
+    }
+  },
+  "Z_II": {
+    "description": "Pauschalgebühren im sozialgerichtlichen Verfahren für die Beiziehung eines Dolmetschers",
+    "betrag_gesetz": 196,
+    "betrag_ab_2025_04_01": 241,
+    "einheit": "je Sprache",
+    "anmerkung": 14
+  },
+  "ermaessigungen": {
+    "rueckziehung_vor_zustellung": { "faktor": 0.25, "quelle": "Anm. 3" },
+    "rueckziehung_oder_vergleich_erste_tagsatzung": { "faktor": 0.5, "quelle": "Anm. 4" },
+    "einstweilige_verfuegung_ausserhalb_zp": { "faktor": 0.5, "quelle": "Anm. 2" }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "tarifpost": "2",
+  "law": "GGG",
+  "title": "Pauschalgebühren für das Rechtsmittelverfahren zweiter Instanz",
+  "section": "Tarif I. Zivilprozesse",
+  "basis": "Berufungsinteresse",
+  "source": "GGG idgF, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 51/2025 ab 1.4.2025)",
+  "currency": "EUR",
+  "brackets": [
+    { "ueber": 0,      "bis": 150,    "betrag_gesetz": 20,    "betrag_ab_2025_04_01": 25,    "anmerkung": 1 },
+    { "ueber": 150,    "bis": 300,    "betrag_gesetz": 44,    "betrag_ab_2025_04_01": 54,    "anmerkung": 2 },
+    { "ueber": 300,    "bis": 700,    "betrag_gesetz": 75,    "betrag_ab_2025_04_01": 92,    "anmerkung": 3 },
+    { "ueber": 700,    "bis": 2000,   "betrag_gesetz": 154,   "betrag_ab_2025_04_01": 189,   "anmerkung": 4 },
+    { "ueber": 2000,   "bis": 3500,   "betrag_gesetz": 304,   "betrag_ab_2025_04_01": 374,   "anmerkung": 5 },
+    { "ueber": 3500,   "bis": 7000,   "betrag_gesetz": 609,   "betrag_ab_2025_04_01": 749,   "anmerkung": 6 },
+    { "ueber": 7000,   "bis": 35000,  "betrag_gesetz": 1219,  "betrag_ab_2025_04_01": 1500,  "anmerkung": 7 },
+    { "ueber": 35000,  "bis": 70000,  "betrag_gesetz": 2288,  "betrag_ab_2025_04_01": 2815,  "anmerkung": 8 },
+    { "ueber": 70000,  "bis": 140000, "betrag_gesetz": 4579,  "betrag_ab_2025_04_01": 5634,  "anmerkung": 9 },
+    { "ueber": 140000, "bis": 210000, "betrag_gesetz": 6867,  "betrag_ab_2025_04_01": 8449,  "anmerkung": 10 },
+    { "ueber": 210000, "bis": 280000, "betrag_gesetz": 9156,  "betrag_ab_2025_04_01": 11265, "anmerkung": 11 },
+    { "ueber": 280000, "bis": 350000, "betrag_gesetz": 11446, "betrag_ab_2025_04_01": 14083, "anmerkung": 12 }
+  ],
+  "ueber_350000": {
+    "formel": "1,8% vom jeweiligen Berufungsinteresse zuzüglich Sockelbetrag",
+    "prozentsatz": 1.8,
+    "sockel_gesetz": 6071,
+    "sockel_ab_2025_04_01": 10106,
+    "anmerkung": 13
+  },
+  "spezialgebuehren": {
+    "jn_49_2_2a_2b": {
+      "betrag_gesetz": 365,
+      "betrag_ab_2025_04_01": 449,
+      "quelle": "Anm. 6 / Anm. 14"
+    }
+  },
+  "ermaessigungen": {
+    "einstweilige_verfuegung": { "faktor": 0.5, "quelle": "Anm. 1a" }
+  }
+}

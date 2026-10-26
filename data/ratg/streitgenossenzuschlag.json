@@ -1,0 +1,16 @@
+{
+  "norm": "§ 15 RATG",
+  "title": "Erhöhung der Entlohnung bei mehreren Personen (Streitgenossenzuschlag)",
+  "regel": {
+    "zwei_personen_auf_einer_seite_prozent": 10.0,
+    "zusatz_je_weitere_person_prozent": 5.0,
+    "obergrenze_prozent": 50.0,
+    "anwendung_auf": "Verdienstsumme einschließlich des Einheitssatzes",
+    "ausgeschlossen_von_basis": [
+      "Reisekosten",
+      "Entschädigung für Zeitversäumnis",
+      "sonstige Auslagen"
+    ]
+  },
+  "ausnahme": "§ 15 Abs. 2 RATG: in Verbandsklageverfahren auf Abhilfe gemäß §§ 623 ff. ZPO bis zur Entscheidung über den Zwischenfeststellungsantrag nicht anwendbar"
+}

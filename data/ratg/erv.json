@@ -1,0 +1,26 @@
+{
+  "norm": "§ 23a RATG",
+  "title": "Erhöhung der Entlohnung im elektronischen Rechtsverkehr (Web-ERV)",
+  "source": "RATG § 23a, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 131/2023 ab 1.5.2023)",
+  "kinds": {
+    "einleitend": {
+      "description": "Verfahrenseinleitender Schriftsatz, eingebracht im Weg des ERV (§ 23a Satz 1)",
+      "betrag_gesetz": 3.60,
+      "betrag_ab_2023_05_01": 5.00,
+      "anmerkung": 1
+    },
+    "weiterer": {
+      "description": "Jeder weitere im ERV eingebrachte Schriftsatz (§ 23a Satz 2)",
+      "betrag_gesetz": 1.80,
+      "betrag_ab_2023_05_01": 2.60,
+      "anmerkung": 2
+    },
+    "grundbuch_firmenbuch": {
+      "description": "Übermittlung sämtlicher in die Urkundensammlung des Grundbuchs/Firmenbuchs aufzunehmender Urkunden im ERV (§ 23a letzter Satz)",
+      "betrag_gesetz": 7.00,
+      "betrag_ab_2023_05_01": 9.50,
+      "anmerkung": 3
+    }
+  },
+  "hinweis": "Der Erhöhungsbetrag ist gemäß § 23a Satz 3 RATG bei der Bemessung des Einheitssatzes (§ 23) und des Streitgenossenzuschlags (§ 15) nicht zu berücksichtigen, unterliegt aber der USt."
+}

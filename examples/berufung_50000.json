@@ -1,0 +1,26 @@
+{
+  "title": "Kostennote Berufung",
+  "header": {
+    "aktenzeichen": "1 R 45/26y",
+    "gericht": "Oberlandesgericht Wien",
+    "klaeger": ["Hans Mustermann"],
+    "beklagter": ["XYZ GmbH"],
+    "stand": "2026-05-12"
+  },
+  "streitwert": 50000,
+  "umsatzsteuer_prozent": 20,
+  "default_personen_einer_seite": 1,
+  "anwaltsleistungen": [
+    {
+      "datum": "2026-04-22",
+      "tp": "3b",
+      "beschreibung": "Berufung (Berufungsinteresse 50.000 EUR)"
+    }
+  ],
+  "gerichtsgebuehren": [
+    {
+      "tp": "2",
+      "beschreibung": "Pauschalgebühr Rechtsmittelverfahren 2. Instanz"
+    }
+  ]
+}
