@@ -36,7 +36,7 @@ pyproject.toml      setuptools, src/-Layout, Python ≥ 3.10
 
 ```bash
 pip install -e ".[test]"          # Bibliothek + pytest + reportlab + pypdf
-python -m pytest -q               # gesamte Suite (aktuell 151 Tests)
+python -m pytest -q               # gesamte Suite (aktuell 158 Tests)
 python -m gerichtskostennote examples/klage_15000.json           # Markdown
 python -m gerichtskostennote examples/klage_15000.json -o x.pdf   # PDF
 gkn input.json                                                    # Konsolen-Skript
@@ -80,13 +80,15 @@ Auto-generierte Fahrtkosten-Barauslagen kommen *vor* expliziten `barauslagen`-Ei
 - **§ 6 Abs. 2 GGG**: Hundertsatz-/Tausendsatzgebühren werden auf den nächsthöheren Euro **aufgerundet** (`ROUND_CEILING`). Implementiert in `ggg._ceil_euro`.
 - **Bracket-Semantik**: `ueber` exklusiv (`>`), `bis` inklusiv (`≤`). Beide GGG und RATG nutzen das.
 - **Doppelte Werte in den JSON-Daten**:
-  - GGG: `betrag_gesetz` + `betrag_ab_2025_04_01` (Valorisierung BGBl. II Nr. 51/2025).
+  - GGG: `betrag_gesetz` + `betrag_ab_2025_04_01` (BGBl. II Nr. 51/2025, nur noch Historie) + `betrag_ab_2026_08_01` (BGBl. II Nr. 227/2026, aktuell).
+  - GGG-Sondergebühren, die nur zeitweise gelten, tragen `gilt_ab` / `gilt_bis` (siehe `data/ggg/README.md`).
   - RATG: `betrag_gesetz` + `betrag_ab_2023_05_01` (Valorisierung BGBl. II Nr. 131/2023).
   - Default: `valorized=True` (= aktuelle Beträge).
-- **Tarifstand**: 14.04.2026 (Quelle: RIS-Konsolidate als PDF im Repo-Root).
+- **Tarifstand**: RIS-Konsolidate vom 14.04.2026 (PDF im Repo-Root); GGG nachgeführt um BGBl. II Nr. 227/2026 (ab 1.8.2026) und BGBl. I Nr. 62/2026 Art. 14 (ab 1.10.2026). RATG: keine Änderung der Tarifbeträge seit BGBl. II Nr. 131/2023 (Stand 26.10.2026).
+- **Neue Valorisierung einspielen**: neues Feld `*_ab_JJJJ_MM_TT` neben den alten Werten anlegen, in `ggg.py` bzw. `ratg.py` die gelesenen Feldnamen umstellen, Tests anpassen. Alte Werte als Historie behalten.
 - **§ 23 Abs. 5 RATG** Spezialfälle (Verdoppelung etc.) werden über `einheitssatz_multiplier` exponiert — Daten dafür hardgecodet nicht, User setzt's pro Leistung.
 
-## Was implementiert ist (Stand 12.05.2026)
+## Was implementiert ist (Stand 26.10.2026)
 
 **GGG**: TP 1–4 vollständig (Pauschalgebühren Zivilprozess 1./2./3. Instanz; Exekutionsverfahren mit den Multiplikatoren Z II/III).
 
@@ -119,6 +121,13 @@ Auto-generierte Fahrtkosten-Barauslagen kommen *vor* expliziten `barauslagen`-Ei
 - PR-Aktivitäts-Abonnement ist aktiv: CI-Failures und Review-Comments kommen als `<github-webhook-activity>` rein.
 - Default-Branch wurde vom Bootstrap-Branch `claude/initial-repo-setup-067NM` auf `main` umgestellt; alter Branch existiert noch (kann gelöscht werden, wenn der User möchte).
 
+## Rechtsquellen online prüfen
+
+- `www.ris.bka.gv.at` ist in der Cloud-Umgebung freigeschaltet, liefert automatisierten Abfragen aber nur eine Bot-Schutzseite (Myra Cloud, HTTP 503) — auch für direkte PDF-Links. Nicht umgehen.
+- Für automatisierte Abfragen die RIS-Open-Data-API auf `data.bka.gv.at` verwenden (muss unter *Allowed domains* der Umgebung eingetragen sein).
+- Ohne Zugriff: den User bitten, BGBl.-PDFs hochzuladen, und mit `pdftotext -layout` auswerten.
+- Nach einem Container-Neustart fehlen ggf. Pakete: `python3 -m pip install -e ".[test]"` (mit `python3 -m pip`, nicht `pip`, sonst landet das Paket im falschen Interpreter).
+
 ## Tests laufen lassen
 
 ```bash
@@ -127,8 +136,8 @@ python -m pytest -v              # verbose
 python -m pytest tests/test_ratg.py::test_tagsatzung_two_hours_one_and_a_half
 ```
 
-Aktuell **151 Tests** in 4 Dateien:
-- `tests/test_ggg.py` (38) — GGG TP 1–4
+Aktuell **158 Tests** in 4 Dateien:
+- `tests/test_ggg.py` (45) — GGG TP 1–4, Datenintegrität der Valorisierung und der BBG-Sondergebühren
 - `tests/test_ratg.py` (49) — RATG TP 1/2/3A/3B/3C, § 23, § 15, ERV, Tagsatzungsdauer
 - `tests/test_renderer.py` (44) — compute(), Markdown, CLI, ERV, Barauslagen, Fahrtkosten, dauer_stunden
 - `tests/test_pdf.py` (10) — ReportLab-Renderer, CLI-Dispatch, pypdf-Textextraktion
