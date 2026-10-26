@@ -238,3 +238,33 @@ def test_every_2025_value_has_a_higher_2026_value(filename: str) -> None:
             assert node[new_key] > old, f"{filename}: {new_key} nicht höher als {key}"
             checked += 1
     assert checked > 0
+
+
+# ---------------------------------------------------------------------------
+# Datenintegrität: Budgetbegleitgesetz 2027-2028 (BGBl. I Nr. 62/2026)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "filename,path,jn_neu,ev_neu",
+    [
+        ("tp1_zivilprozess_erste_instanz.json", ("Z_I", "spezialgebuehren"), 410, 205),
+        ("tp2_zivilprozess_zweite_instanz.json", ("spezialgebuehren",), 449, 224),
+        ("tp3_zivilprozess_dritte_instanz.json", ("spezialgebuehren",), 671, 335),
+    ],
+)
+def test_bbg_2026_spezialgebuehren(filename, path, jn_neu, ev_neu) -> None:
+    import json
+    from pathlib import Path
+
+    node = json.loads(
+        (Path(__file__).parent.parent / "data" / "ggg" / filename).read_text()
+    )
+    for key in path:
+        node = node[key]
+    assert node["jn_49_2_2a_2b"]["gilt_bis"] == "2026-09-30"
+    assert node["jn_49_2_2a_2d"]["betrag_ab_2026_10_01"] == jn_neu
+    assert node["jn_49_2_2a_2d"]["gilt_ab"] == "2026-10-01"
+    ev = next(v for k, v in node.items() if k.startswith("ev_382b_382d_eo"))
+    assert ev["betrag_ab_2026_10_01"] == ev_neu
+    assert ev["gilt_ab"] == "2026-10-01"

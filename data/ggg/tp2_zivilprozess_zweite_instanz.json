@@ -4,7 +4,7 @@
   "title": "Pauschalgebühren für das Rechtsmittelverfahren zweiter Instanz",
   "section": "Tarif I. Zivilprozesse",
   "basis": "Berufungsinteresse",
-  "source": "GGG idgF, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 51/2025 ab 1.4.2025)",
+  "source": "GGG idF BGBl. I Nr. 62/2026; Tarifwerte BGBl. II Nr. 51/2025 (ab 1.4.2025) und BGBl. II Nr. 227/2026 (ab 1.8.2026)",
   "currency": "EUR",
   "brackets": [
     { "ueber": 0,      "bis": 150,    "betrag_gesetz": 20,    "betrag_ab_2025_04_01": 25, "betrag_ab_2026_08_01": 26,    "anmerkung": 1 },
@@ -31,10 +31,28 @@
     "jn_49_2_2a_2b": {
       "betrag_gesetz": 365,
       "betrag_ab_2025_04_01": 449, "betrag_ab_2026_08_01": 475,
-      "quelle": "Anm. 6 / Anm. 14"
+      "gilt_bis": "2026-09-30",
+      "quelle": "Anm. 6 aF (vor BGBl. I Nr. 62/2026)"
+    },
+    "jn_49_2_2a_2d": {
+      "betrag_ab_2026_10_01": 449,
+      "gilt_ab": "2026-10-01",
+      "quelle": "Anm. 6 Satz 1 idF BGBl. I Nr. 62/2026",
+      "hinweis": "Gesetzestext nennt 449 Euro; die VO BGBl. II Nr. 227/2026 (475 Euro) bezog sich auf die alte Anm. 6. Gegen die konsolidierte RIS-Fassung prüfen."
+    },
+    "ev_382b_382d_eo": {
+      "betrag_ab_2026_10_01": 224,
+      "gilt_ab": "2026-10-01",
+      "quelle": "Anm. 6 Satz 3 idF BGBl. I Nr. 62/2026",
+      "zahlungspflicht": "Rechtsmittelwerber, wenn das Rechtsmittel zumindest teilweise erfolglos blieb (§ 7 Abs. 1 Z 1a GGG)",
+      "fruehere_rechtslage": "bis 30.9.2026 gebührenfrei (Anm. 1a letzter Satz aF)"
     }
   },
   "ermaessigungen": {
-    "einstweilige_verfuegung": { "faktor": 0.5, "quelle": "Anm. 1a" }
+    "einstweilige_verfuegung": {
+      "faktor": 0.5,
+      "quelle": "Anm. 1a",
+      "hinweis": "Gilt nicht für EV nach §§ 382b–382d EO; diese siehe spezialgebuehren.ev_382b_382d_eo"
+    }
   }
 }

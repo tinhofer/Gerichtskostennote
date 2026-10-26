@@ -4,7 +4,7 @@
   "title": "Pauschalgebühren in zivilgerichtlichen Verfahren erster Instanz",
   "section": "Tarif I. Zivilprozesse",
   "basis": "Wert des Streitgegenstandes",
-  "source": "GGG idgF, Stand 14.04.2026 (Tarifwerte BGBl. II Nr. 51/2025 ab 1.4.2025)",
+  "source": "GGG idF BGBl. I Nr. 62/2026; Tarifwerte BGBl. II Nr. 51/2025 (ab 1.4.2025) und BGBl. II Nr. 227/2026 (ab 1.8.2026)",
   "currency": "EUR",
   "Z_I": {
     "description": "Pauschalgebühren in zivilgerichtlichen Verfahren erster Instanz",
@@ -39,7 +39,21 @@
       "jn_49_2_2a_2b": {
         "betrag_gesetz": 333,
         "betrag_ab_2025_04_01": 410, "betrag_ab_2026_08_01": 433,
-        "quelle": "Anm. 9 / Anm. 15"
+        "gilt_bis": "2026-09-30",
+        "quelle": "Anm. 9 aF (vor BGBl. I Nr. 62/2026)"
+      },
+      "jn_49_2_2a_2d": {
+        "betrag_ab_2026_10_01": 410,
+        "gilt_ab": "2026-10-01",
+        "quelle": "Anm. 9 Satz 1 idF BGBl. I Nr. 62/2026",
+        "hinweis": "Gesetzestext nennt 410 Euro; die VO BGBl. II Nr. 227/2026 (433 Euro) bezog sich auf die alte Anm. 9. Gegen die konsolidierte RIS-Fassung prüfen."
+      },
+      "ev_382b_382d_eo_ausserhalb_zp": {
+        "betrag_ab_2026_10_01": 205,
+        "gilt_ab": "2026-10-01",
+        "quelle": "Anm. 9 Satz 3 idF BGBl. I Nr. 62/2026",
+        "zahlungspflicht": "Gegner der gefährdeten Partei, nur wenn die EV erlassen wurde (§ 7 Abs. 1 Z 1a GGG)",
+        "fruehere_rechtslage": "bis 30.9.2026 gebührenfrei (Anm. 2 letzter Satz aF)"
       }
     }
   },
@@ -53,6 +67,10 @@
   "ermaessigungen": {
     "rueckziehung_vor_zustellung": { "faktor": 0.25, "quelle": "Anm. 3" },
     "rueckziehung_oder_vergleich_erste_tagsatzung": { "faktor": 0.5, "quelle": "Anm. 4" },
-    "einstweilige_verfuegung_ausserhalb_zp": { "faktor": 0.5, "quelle": "Anm. 2" }
+    "einstweilige_verfuegung_ausserhalb_zp": {
+      "faktor": 0.5,
+      "quelle": "Anm. 2",
+      "hinweis": "Gilt nicht für EV nach §§ 382b–382d EO; diese siehe spezialgebuehren.ev_382b_382d_eo_ausserhalb_zp"
+    }
   }
 }
